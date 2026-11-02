@@ -1,0 +1,191 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.129 0.042 264.695);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.129 0.042 264.695);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
+  --primary: oklch(0.208 0.042 265.755);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.929 0.013 255.508);
+  --ring: oklch(0.704 0.04 256.788);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
+
+/* Hymns pages — navy & gold, matching the static site */
+:root {
+  --navy: oklch(0.32 0.13 265);
+  --gold: oklch(0.78 0.13 85);
+  --hymns-bg: oklch(0.975 0.008 85);
+}
+@keyframes hymns-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@layer components {
+  .hymns-page { background: var(--hymns-bg); font-family: "Cairo", sans-serif; color: var(--foreground); }
+  .hymns-nav { background: var(--navy); position: sticky; top: 0; z-index: 20; box-shadow: 0 4px 20px -8px oklch(0 0 0 / 40%); }
+  .hymns-logo { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--gold); color: var(--navy); font-weight: 900; }
+  .hymns-nav-link { color: var(--primary-foreground); opacity: .85; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 14px; transition: all .2s; }
+  .hymns-nav-link:hover { opacity: 1; background: oklch(1 0 0 / 12%); }
+  .hymns-nav-link.active { opacity: 1; background: var(--gold); color: var(--navy); }
+  .hymns-hero { position: relative; overflow: hidden; background: var(--navy); }
+  .hymns-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hymns-hero-shade { position: absolute; inset: 0; background: linear-gradient(to left, color-mix(in oklab, var(--navy) 95%, transparent) 30%, color-mix(in oklab, var(--navy) 30%, transparent)); }
+  .hymns-chip { display: inline-block; color: var(--gold); border: 1px solid color-mix(in oklab, var(--gold) 50%, transparent); border-radius: 999px; padding: 4px 14px; font-size: 13px; font-weight: 600; }
+  .hymns-hero-title { margin-top: 14px; font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; color: var(--primary-foreground); }
+  .hymns-hero-text { margin-top: 10px; font-size: 1.1rem; color: color-mix(in oklab, var(--primary-foreground) 80%, transparent); }
+  .hymns-search { width: 100%; border-radius: 14px; padding: 14px 18px; background: oklch(1 0 0 / 95%); color: var(--foreground); outline: none; border: 2px solid transparent; }
+  .hymns-search:focus { border-color: var(--gold); }
+  .hymns-title, .hymns-subtitle { font-weight: 900; color: var(--navy); font-size: 1.3rem; }
+  .hymns-count { font-size: 13px; color: var(--muted-foreground); background: var(--card); border: 1px solid var(--border); padding: 2px 12px; border-radius: 999px; }
+  .hymns-card { background: var(--card); border: 1px solid color-mix(in oklab, var(--gold) 20%, var(--border)); border-radius: 18px; padding: 20px; box-shadow: 0 12px 30px -16px oklch(0.3 0.1 265 / 25%); }
+  .hymns-item { animation: hymns-rise .4s ease both; transition: transform .2s, box-shadow .2s; }
+  .hymns-item:hover { transform: translateY(-3px); box-shadow: 0 18px 36px -16px oklch(0.3 0.1 265 / 35%); }
+  .hymns-form { border-top: 4px solid var(--gold); }
+  .hymns-disc { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 999px; background: linear-gradient(135deg, var(--navy), oklch(0.45 0.15 260)); color: var(--gold); font-size: 20px; }
+  .hymns-lyrics { margin-top: 12px; white-space: pre-line; line-height: 2; padding: 14px; border-radius: 12px; background: var(--hymns-bg); }
+  .hymns-input { width: 100%; border: 1px solid var(--border); background: var(--card); border-radius: 12px; padding: 10px 14px; outline: none; transition: all .2s; }
+  .hymns-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold) 25%, transparent); }
+  .hymns-drop { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px; border: 2px dashed color-mix(in oklab, var(--gold) 60%, transparent); border-radius: 14px; cursor: pointer; text-align: center; transition: background .2s; }
+  .hymns-drop:hover { background: color-mix(in oklab, var(--gold) 10%, transparent); }
+  .hymns-btn { background: var(--navy); color: var(--primary-foreground); border-radius: 12px; padding: 10px; font-weight: 700; transition: all .2s; }
+  .hymns-btn:hover { background: color-mix(in oklab, var(--navy) 80%, var(--gold)); }
+  .hymns-btn:disabled { opacity: .6; }
+  .hymns-danger { border: 1px solid var(--destructive); color: var(--destructive); border-radius: 12px; padding: 8px 16px; font-weight: 700; }
+  .hymns-danger:hover { background: var(--destructive); color: var(--primary-foreground); }
+  .hymns-ghost { color: var(--navy); border: 1px solid var(--gold); border-radius: 999px; padding: 4px 14px; font-size: 13px; font-weight: 600; }
+  .hymns-ghost:hover { background: color-mix(in oklab, var(--gold) 20%, transparent); }
+  .hymns-ok { font-size: 14px; color: var(--navy); background: color-mix(in oklab, var(--gold) 20%, transparent); padding: 10px; border-radius: 10px; }
+  .hymns-tab { padding: 8px 18px; border-radius: 999px; font-weight: 700; border: 1px solid var(--border); background: var(--card); display: inline-flex; gap: 8px; align-items: center; }
+  .hymns-tab.active { background: var(--navy); color: var(--primary-foreground); border-color: var(--navy); }
+  .hymns-badge { background: var(--gold); color: var(--navy); border-radius: 999px; padding: 0 8px; font-size: 12px; }
+}
