@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الكتب المقدس</title>
+<style>
+  :root { --navy:#141f73; --blue:#3447a0; --orange:#f08030; --bg:#fff; --text:#222; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14151c; --text:#e8e8ee; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:"Traditional Arabic","Amiri","Noto Naskh Arabic",serif; }
+  header { background:var(--navy); color:#fff; text-align:center; padding:14px 50px; font-size:22px; font-weight:bold; position:relative; }
+  header .arrow { position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:26px; }
+  .wrap { max-width:720px; margin:8px auto; padding:0 12px; }
+  .row { display:flex; gap:10px; margin-bottom:10px; justify-content:center; }
+  select, .btn { height:58px; border:2px solid var(--blue); border-radius:8px; font-family:inherit; font-size:16px; font-weight:bold; }
+  select { flex:1; padding:0 12px; background:var(--bg); color:var(--text); }
+  .btn { background:var(--blue); color:#e8e9ee; padding:0 22px; cursor:pointer; border-color:var(--orange); }
+  #prayer { width:100%; }
+  #text { margin-top:18px; font-size:22px; line-height:2.1; white-space:pre-wrap; }
+  .rubric { font-size:17px; opacity:.85; }
+  #sign { display:none; margin:10px 0; padding:14px; border:2px dashed var(--blue); border-radius:8px; text-align:center; }
+  .tools { text-align:center; margin-top:30px; font-size:14px; opacity:.8; }
+  .tools button { font-family:inherit; font-size:14px; padding:6px 12px; margin:3px; cursor:pointer; }
+  #status { margin-top:6px; }
+</style>
+<script src="settings.js"></script>
+</head>
+<body>
+<header>الكتب المقدس<header> <a href="bible.html" style="text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; width: 100%;"> <span>المنجليه</span> <span class="arrow">›</span> </a> </header></header>
+<div class="wrap">
+  <div class="row">
+    <select id="hour"></select>
+    <button class="btn" id="signBtn">لغة الإشارة</button>
+  </div>
+  <div class="row"><select id="prayer"></select></div>
+  <div id="sign">هنا يظهر فيديو لغة الإشارة (ضع رابط الفيديو في الكود)</div>
+  <div id="text"></div>
+
+  <div class="tools"><div id="status"></div></div>
+</div>
+
+<script src="bible-data.js"></script>
+<script>
+/* صيغة الملف:
+   # اسم الساعة / القسم
+   ## اسم الصلاة / الفصل
+   النص... (أي أسطر)
+   سطر يبدأ بـ ** يظهر كتوجيه (Rubric)
+*/
+let data = [];
+const hourEl = document.getElementById('hour');
+const prayerEl = document.getElementById('prayer');
+const textEl = document.getElementById('text');
+const statusEl = document.getElementById('status');
+let books = (typeof BOOKS !== 'undefined') ? BOOKS : {};
+
+function parse(txt, bookName) {
+  const out = []; let h = null, p = null;
+  txt.replace(/\r/g,'').split('\n').forEach(line => {
+    if (line.startsWith('## ')) { p = {name:line.slice(3).trim(), text:''}; if(!h){h={name:'عام',prayers:[]};out.push(h);} h.prayers.push(p); }
+    else if (line.startsWith('# ')) { h = {name:line.slice(2).trim(), prayers:[]}; out.push(h); p = null; }
+    else if (p) p.text += line + '\n';
+    else if (line.trim()) { h = {name:bookName, prayers:[]}; p = {name:bookName, text:line + '\n'}; h.prayers.push(p); out.push(h); }
+  });
+  return out;
+}
+function init() {
+  const names = Object.keys(books);
+  if (!names.length) {
+    statusEl.textContent = 'لا توجد كتب. ضع ملفات txt في فولدر books ثم شغّل python build2.py';
+    return;
+  }
+  data = [];
+  names.forEach(n => parse(books[n], n).forEach(h => {
+    if (h.name === 'عام') h.name = n;
+    if (h.prayers.length) data.push(h);
+  }));
+  fillHours(0,0);
+}
+function fillHours(h=0, p=0) {
+  hourEl.innerHTML = data.map((x,i)=>`<option value="${i}">${x.name}</option>`).join('');
+  hourEl.value = Math.min(h, data.length-1);
+  fillPrayers(p);
+}
+function fillPrayers(k=0) {
+  const h = data[hourEl.value]; if(!h){ prayerEl.innerHTML=''; textEl.innerHTML=''; return; }
+  prayerEl.innerHTML = h.prayers.map((x,i)=>`<option value="${i}">${x.name}</option>`).join('');
+  prayerEl.value = Math.min(k, h.prayers.length-1);
+  showText();
+}
+function showText() {
+  const p = (data[hourEl.value]||{prayers:[]}).prayers[prayerEl.value];
+  textEl.innerHTML = '';
+  if (!p) return;
+  if (!p.text.trim()) { textEl.textContent = '(لا يوجد نص بعد في ملف الـ txt)'; return; }
+  p.text.trim().split('\n').forEach(l => {
+    const d = document.createElement('div');
+    if (l.trim().startsWith('**')) d.className = 'rubric';
+    d.textContent = l;
+    textEl.appendChild(d);
+  });
+}
+hourEl.onchange = () => fillPrayers(0);
+prayerEl.onchange = showText;
+document.getElementById('signBtn').onclick = () => {
+  const s = document.getElementById('sign');
+  s.style.display = s.style.display === 'block' ? 'none' : 'block';
+};
+init();
+</script>
+<a href="./home.html" style="position:fixed;bottom:16px;left:16px;background:#1e3a8a;color:#fff;padding:8px 14px;border-radius:10px;font-family:Cairo,sans-serif;text-decoration:none;z-index:999">الرئيسية</a>
+<a href="./hymns" style="position:fixed;bottom:16px;left:110px;background:#d4af37;color:#1e3a8a;padding:8px 14px;border-radius:10px;font-family:Cairo,sans-serif;text-decoration:none;z-index:999">الترانيم</a>
+</body>
+</html>

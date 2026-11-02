@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الكتب الطقسية | نور الحياة</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    #reader {
+    --rd-bg:#f3f5fb; --rd-card:#fff; --rd-text:#1b2340; --rd-sub:#5b6585;
+    --rd-from:#1e3a8a; --rd-to:#3b5bdb; --rd-gold:#d4a63a; --rd-shadow:0 8px 24px rgba(30,58,138,.12);
+    display:block; min-height:100vh; padding:24px 16px 60px;
+    background:var(--rd-bg); color:var(--rd-text);
+    font-family:"Cairo",sans-serif; direction:rtl; transition:background .3s,color .3s;
+  }
+  #reader[data-theme="dark"] {
+    --rd-bg:#0d1220; --rd-card:#161d33; --rd-text:#e8ecf8; --rd-sub:#a3adcc;
+    --rd-from:#2a3f9e; --rd-to:#4a66e0; --rd-shadow:0 8px 24px rgba(0,0,0,.45);
+  }
+  #reader *, #reader *::before, #reader *::after { box-sizing:border-box; }
+  #reader .rd-wrap { max-width:820px; margin:0 auto; }
+
+  #reader .rd-bar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+  #reader .rd-tools { display:flex; gap:8px; }
+  #reader .rd-btn {
+    display:inline-flex; align-items:center; justify-content:center;
+    height:44px; min-width:44px; padding:0 16px; border:none; border-radius:22px; cursor:pointer;
+    background:var(--rd-card); color:var(--rd-text); box-shadow:var(--rd-shadow);
+    font:600 15px "Cairo",sans-serif; text-decoration:none; transition:transform .2s;
+  }
+  #reader .rd-btn:hover { transform:translateY(-2px); }
+
+  #reader .rd-card { display:block; background:var(--rd-card); border-radius:22px; box-shadow:var(--rd-shadow); overflow:hidden; }
+  #reader .rd-title {
+    margin:0; padding:26px 20px; text-align:center; color:#fff; font-size:28px; font-weight:900;
+    background:linear-gradient(135deg, var(--rd-from), var(--rd-to)); border-bottom:4px solid var(--rd-gold);
+  }
+  #reader .rd-text {
+    display:block; padding:28px; font-size:20px; line-height:2.1; white-space:pre-wrap;
+    color:var(--rd-text); word-wrap:break-word;
+  }
+  #reader .rd-text.rd-missing { text-align:center; color:var(--rd-sub); }
+
+  @media (max-width:520px) { #reader .rd-title { font-size:22px; } #reader .rd-text { padding:20px; } }
+    #booksPage {
+      --bk-bg:#f3f5fb; --bk-card:#fff; --bk-text:#1b2340; --bk-sub:#5b6585; --bk-soft:#eef1fa;
+      --bk-from:#1e3a8a; --bk-to:#3b5bdb; --bk-gold:#d4a63a; --bk-shadow:0 8px 24px rgba(30,58,138,.12);
+      display:block; width:100%; min-height:100vh; padding:24px 16px 60px;
+      background:var(--bk-bg); color:var(--bk-text);
+      font-family:"Cairo",sans-serif; direction:rtl; transition:background .3s,color .3s;
+    }
+    #booksPage[data-theme="dark"] {
+      --bk-bg:#0d1220; --bk-card:#161d33; --bk-text:#e8ecf8; --bk-sub:#a3adcc; --bk-soft:#1f2846;
+      --bk-from:#2a3f9e; --bk-to:#4a66e0; --bk-shadow:0 8px 24px rgba(0,0,0,.45);
+    }
+    #booksPage *, #booksPage *::before, #booksPage *::after { box-sizing:border-box; }
+    #booksPage .bk-wrap { display:block; max-width:1100px; margin:0 auto; }
+
+    #booksPage .bk-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+    #booksPage .bk-back, #booksPage .bk-theme {
+      display:inline-flex; align-items:center; justify-content:center; gap:6px;
+      height:44px; padding:0 16px; border:none; border-radius:22px; cursor:pointer;
+      background:var(--bk-card); color:var(--bk-text); box-shadow:var(--bk-shadow);
+      font:600 15px "Cairo",sans-serif; text-decoration:none; transition:transform .2s;
+    }
+    #booksPage .bk-theme { width:44px; padding:0; font-size:20px; border-radius:50%; }
+    #booksPage .bk-back:hover, #booksPage .bk-theme:hover { transform:translateY(-2px); }
+
+    #booksPage .bk-hero {
+      display:block; position:relative; z-index:1; width:100%;
+      text-align:center; padding:40px 20px; border-radius:24px; color:#fff;
+      background:radial-gradient(circle at 20% 20%, rgba(212,166,58,.25), transparent 45%),
+                 linear-gradient(135deg, var(--bk-from), var(--bk-to));
+      box-shadow:var(--bk-shadow);
+    }
+    #booksPage .bk-hero h1 { margin:0 0 8px; font-size:34px; font-weight:900; color:#fff; }
+    #booksPage .bk-hero h1 span { color:#f3d37a; }
+    #booksPage .bk-hero p { margin:0; opacity:.85; font-size:16px; color:#fff; }
+
+    #booksPage .bk-search { max-width:480px; margin:-24px auto 28px; position:relative; z-index:5; padding:0 16px; }
+    #booksPage .bk-search input {
+      width:100%; height:50px; padding:0 48px 0 18px; border:none; border-radius:25px; outline:none;
+      background:var(--bk-card); color:var(--bk-text); box-shadow:var(--bk-shadow);
+      font:600 16px "Cairo",sans-serif;
+    }
+    #booksPage .bk-search input:focus { box-shadow:0 0 0 3px rgba(59,91,219,.35), var(--bk-shadow); }
+    #booksPage .bk-search i { position:absolute; right:32px; top:50%; transform:translateY(-50%); font-style:normal; opacity:.6; }
+
+    #booksPage .bk-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:20px; }
+    #booksPage .bk-card {
+      display:flex; flex-direction:column; gap:10px; padding:22px; border-radius:20px;
+      background:var(--bk-card); color:var(--bk-text); text-decoration:none;
+      box-shadow:var(--bk-shadow); border-top:4px solid transparent;
+      transition:transform .25s, border-color .25s; animation:bkRise .5s ease both;
+    }
+    #booksPage .bk-card:hover { transform:translateY(-6px); border-top-color:var(--bk-gold); }
+
+    /* مربع الأيقونة / الصورة */
+    #booksPage .bk-icon {
+      width:60px; height:60px; border-radius:16px; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+      font-size:30px; background:var(--bk-soft);
+    }
+    #booksPage .bk-icon img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    #booksPage .bk-card h2 { margin:4px 0 0; font-size:20px; font-weight:700; color:var(--bk-text); }
+    #booksPage .bk-card p { margin:0; color:var(--bk-sub); font-size:14.5px; line-height:1.8; flex:1; }
+    #booksPage .bk-open { color:var(--bk-to); font-weight:700; font-size:14px; }
+    #booksPage[data-theme="dark"] .bk-open { color:#8fa5ff; }
+    #booksPage .bk-card:hover .bk-open { color:var(--bk-gold); }
+    #booksPage .bk-empty { grid-column:1/-1; text-align:center; padding:40px; color:var(--bk-sub); }
+
+    @keyframes bkRise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+    @media (max-width:520px) { #booksPage .bk-hero h1 { font-size:26px; } #booksPage .bk-grid { grid-template-columns:1fr; } }
+  </style>
+<script src="settings.js"></script>
+</head>
+
+<body data-theme="light">
+
+<!-- ===== الشريط العلوي ===== -->
+<div class="top-navigation-wrapper">
+
+  <nav class="top-nav-bar">
+    <div class="top-nav-links">
+      <a href="./hymns" class="top-nav-item">ترانيم</a>
+
+      <div class="dropdown-container">
+        <a href="home.html" class="top-nav-item active">صفحه رئيسيه</a>
+      </div>
+
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">المسيحيه</a>
+        <div class="dropdown-menu">
+          <a href="#">الله تبارك اسمه</a>
+          <a href="#">لا إله إلا الله: وحدانية الله في المسيحية</a>
+          <a href="#">ما هو الكتاب المقدس، وأقسامه؟</a>
+        </div>
+      </div>
+
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">الكتاب المقدس</a>
+        <div class="dropdown-menu">
+          <a href="#">العهد القديم</a>
+          <a href="#">العهد الجديد</a>
+          <a href="#">معلومات عن الكتب المقدسة</a>
+        </div>
+      </div>
+
+      <div class="dropdown-container">
+        <a href="book.html" class="top-nav-item active">كتب</a>
+        <div class="dropdown-menu">
+          <a href="book.html">الكتب الطقسية</a>
+          <a href="agpeya1.html">الأجبية</a>
+        </div>
+      </div>
+
+      <a href="#" class="top-nav-item">طقس</a>
+      <a href="#" class="top-nav-item">عقيدة</a>
+      <a href="#" class="top-nav-item">تاريخ</a>
+      <a href="#" class="top-nav-item">أسئلة</a>
+      <a href="#" class="top-nav-item">خدمة</a>
+    </div>
+  </nav>
+
+  <div class="sub-header-bar">
+    <div class="left-tools">
+      <button class="tool-btn"><i data-lucide="settings"></i> خيارات</button>
+      <button class="tool-btn lang-btn">En</button>
+      <button class="tool-btn">أطفال</button>
+    </div>
+  </div>   <!-- قفل sub-header-bar (كان ناقص) -->
+
+</div>     <!-- قفل top-navigation-wrapper (كان ناقص) -->
+<!-- ===== نهاية الشريط العلوي ===== -->
+
+
+<!-- ===== صفحة الكتب ===== -->
+<div id="booksPage">
+  <div class="bk-wrap">
+
+    <div class="bk-bar">
+      <button class="bk-theme" id="bkTheme" title="الوضع الليلي">🌙</button>
+    </div>
+
+    <div class="bk-hero">
+      <h1>الكتب <span>الطقسية</span></h1>
+      <p>صلوات وألحان وقراءات الكنيسة في مكان واحد</p>
+    </div>
+
+    <div class="bk-search">
+      <input id="bkSearch" type="text" placeholder="ابحثي عن كتاب...">
+      <i>🔍</i>
+    </div>
+
+    <div class="bk-grid" id="bkGrid"></div>
+
+  </div>
+</div>
+
+
+<script>
+(function () {
+  /* ===== عدلي هنا: img للصورة أو icon للإيموجي ===== */
+  const books = [
+    { img:"img/00.png", title:"الخولاجي المقدس",      href:"book.html?b=khulagy", desc:"كتاب القداسات الإلهية وصلوات الأسرار الكنسية." },
+    { img:"img/1.png",     title:"الأجبية",              href:"agpeya1.html", desc:"صلوات السبعة أوقات: باكر والثالثة والسادسة والتاسعة والغروب والنوم ونصف الليل." },
+    { img:"img/2.png",    title:"القطمارس",             href:"book.html?b=qatmaros", desc:"القراءات الكنسية اليومية من الكتاب المقدس على مدار السنة." },
+  { img:"img/3.png",    title:"الإبصلمودية السنوية",  href:"book.html?b=absalmodia-annual", desc:"تسبحة نصف الليل وألحانها على مدار السنة." },
+    { img:"img/4.png",    title:"الإبصلمودية الكيهكية", href:"book.html?b=absalmodia-koiak", desc:"تسبحة شهر كيهك وألحانها الخاصة بالشهر." },
+    { img:"img/5.png",     title:"دلال أسبوع الآلام",    href:"book.html?b=holy-week", desc:"ترتيب وصلوات وقراءات أسبوع الآلام يومًا بيوم." },
+    { img:"img/6.png",     title:"صلاة السجدة",          href:"book.html?b=sujood", desc:"صلوات السجدة التي تُقال في عيد العنصرة (يوم الخمسين)." },
+    { img:"img/7.png",       title:"صلوات القسم",          href:"book.html?b=qasm", desc:"مجموعة صلوات القسم الكنسية." }
+  ];
+
+  const grid = document.getElementById("bkGrid");
+
+  function render(list) {
+    grid.innerHTML = "";
+    if (!list.length) { grid.innerHTML = '<div class="bk-empty">لا توجد نتائج</div>'; return; }
+    list.forEach((b, i) => {
+      const a = document.createElement("a");
+      a.className = "bk-card";
+      a.href = b.href;
+      a.style.animationDelay = (i * 0.06) + "s";
+
+      // صورة لو موجودة، وإلا إيموجي، وإلا 📖
+      const pic = b.img ? `<img src="${b.img}" alt="${b.title}">` : (b.icon || "📖");
+
+      a.innerHTML = `<div class="bk-icon">${pic}</div><h2>${b.title}</h2><p>${b.desc}</p><span class="bk-open">فتح الكتاب ←</span>`;
+      grid.appendChild(a);
+    });
+  }
+  render(books);
+
+  document.getElementById("bkSearch").addEventListener("input", e => {
+    const q = e.target.value.trim();
+    render(books.filter(b => b.title.includes(q) || b.desc.includes(q)));
+  });
+
+  const root = document.getElementById("booksPage"), btn = document.getElementById("bkTheme");
+  function setTheme(t) {
+    root.dataset.theme = t; btn.textContent = t === "dark" ? "☀️" : "🌙";
+    try { localStorage.setItem("theme", t); } catch (e) {}
+  }
+  let saved = null; try { saved = localStorage.getItem("theme"); } catch (e) {}
+  setTheme(saved === "dark" ? "dark" : "light");
+  btn.onclick = () => setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+})();
+
+/* أيقونة "خيارات" */
+if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- كان في الـ head قبل ما العناصر تتكون، فنقلته هنا -->
+<script src="00.js"></script>
+</body>
+</html>

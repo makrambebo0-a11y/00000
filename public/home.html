@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <link rel="stylesheet" href="style.css">
+     <script src="00.js"></script>
+  <script src="synaxarium.js"></script>
+
+  <div id="synaxarium">
+  <h2 id="syn-date"></h2>
+  <h3 id="syn-title"></h3>
+  <p id="syn-text"></p>
+</div>
+  <script src="synaxarium.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نور الحياة | Coptic Faith Portal</title>
+  <!-- Google Fonts: Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- الشريط العلوي الرئيسي الشامل -->
+<div class="top-navigation-wrapper">
+  
+  <!-- القائمة العلوية الرئيسية -->
+   
+  <nav class="top-nav-bar">
+    <div class="top-nav-links">
+      <a href="./hymns" class="top-nav-item">ترانيم</a>
+      
+      <!-- قسم المسيحية مع قائمة منسدلة (Dropdown) -->
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">المسيحية</a>
+        <div class="dropdown-menu">
+          <a href="#">الله تبارك اسمه</a>
+          <a href="#">لا إله إلا الله: وحدانية الله في المسيحية</a>
+          <a href="#">ما هو الكتاب المقدس، وأقسامه؟</a>
+        </div>
+      </div>
+            <!-- قسم الكتاب المقداس  مع قائمة منسدلة (Dropdown) -->
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">الكتاب المقداس</a>
+        <div class="dropdown-menu">
+          <a href="bible.html">العهد القديم</a>
+          <a href="bible1.html">العهد الجديد</a>
+          <a href="#">معلومات عن الكتب مقدس</a>
+        </div>
+      </div>
+                  <!-- قسم كتب   مع قائمة منسدلة (Dropdown) -->
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">كتب</a>
+        <div class="dropdown-menu">
+          <a href="agpeya1.html">الاجبيه</a>
+
+        </div>
+      </div>
+
+
+      <a href="#" class="top-nav-item">طقس</a>
+      <a href="#" class="top-nav-item">عقيدة</a>
+      <a href="#" class="top-nav-item">تاريخ</a>
+      <a href="#" class="top-nav-item">أسئلة</a>
+            <a href="#" class="top-nav-item">خدمة</a>
+    </div>
+  </nav>
+
+  <!-- الصف الثاني: أدوات إضافية وخيارات البحث -->
+  <div class="sub-header-bar">
+    <div class="left-tools">
+ <div class="tool-btn" onclick="window.location.href='options.html'"><i data-lucide="settings"></i> خيارات</button></div>
+      <button class="tool-btn lang-btn">En</button>
+      <button class="tool-btn">أطفال</button>
+    </div>
+
+    <!-- حقل وأزرار البحث المخصصة -->
+<!-- From Uiverse.io by Pankaj-Meharchandani --> 
+
+<div id="poda">
+  <div class="glow"></div>
+  <div class="darkBorderBg"></div>
+  <div class="darkBorderBg"></div>
+  <div class="darkBorderBg"></div>
+
+  <div class="white"></div>
+
+  <div class="border"></div>
+
+  <div id="main">
+    <input class="input" name="text" type="text" placeholder="بحث..." />
+    <div id="pink-mask"></div>
+    <div class="filterBorder"></div>
+    <div id="filter-icon">
+      <svg
+        fill="none"
+        viewBox="4.8 4.56 14.832 15.408"
+        width="27"
+        height="27"
+        preserveAspectRatio="none"
+      >
+        <path
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          stroke-miterlimit="10"
+          stroke-width="1"
+          stroke="#d6d6e6"
+          d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
+        ></path>
+      </svg>
+    </div>
+    <div id="search-icon">
+      <svg
+        class="feather feather-search"
+        fill="none"
+        height="24"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="11" cy="11" r="8" stroke="url(#search)"></circle>
+        <line
+          x1="22"
+          x2="16.65"
+          y1="22"
+          y2="16.65"
+          stroke="url(#searchl)"
+        ></line>
+        <defs>
+          <linearGradient id="search" gradientTransform="rotate(50)">
+            <stop offset="0%" stop-color="#f8e7f8"></stop>
+            <stop offset="50%" stop-color="#b6a9b7"></stop>
+          </linearGradient>
+          <linearGradient id="searchl">
+            <stop offset="0%" stop-color="#b6a9b7"></stop>
+            <stop offset="50%" stop-color="#837484"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+</div>
+
+
+
+    </div>
+  </div>
+
+ <!-- From Uiverse.io by Cobp --> 
+
+   
+
+
+<!-- تنسيقات CSS الخاصة بالشريط العلوي -->
+
+ 
+
+<script src="settings.js"></script>
+</head>
+<body data-theme="light">
+  <script src="00.js"></script>
+  <script src="synaxarium.js"></script>
+  <!-- الرأس العلوي -->
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">ن</div>
+      <div class="logo-text">
+        <h1>نور الحياة</h1>
+        <span>بوابة القبطية الأرثوذكسية</span>
+      </div>
+    </div>
+    <div class="header-controls">
+      <button class="icon-btn" id="theme-toggle" title="تغيير الوضع الليلي">
+        <i data-lucide="moon"></i>
+      </button>
+    </div>
+
+  </header>
+
+  <!-- المحتوى الرئيسي -->
+  <main>
+    
+    <!-- 1. الصفحة الرئيسية -->
+    <section id="home-view" class="view-section active">
+      
+<section id="synaxarium-view" class="view-section">
+  <h2 class="section-title"><i data-lucide="scroll"></i> السنكسار اليومي</h2>
+  <div class="card">
+    <!-- يتم تحديث هذا العنوان تلقائياً مع تغيير اليوم القبطي -->
+    <h3 id="synaxarium-date-title" style="color: var(--accent); margin-bottom: 8px;">تذكار اليوم</h3>
+    <h4 style="margin-bottom: 12px;">قديسو هذا اليوم</h4>
+    <p style="line-height: 1.8; font-size: 15px;">
+      محتوى تذكارات السنكسار الخاص باليوم...
+    </p>
+  </div>
+</section>
+
+      <div class="coptic-date-card">
+  <div class="coptic-date-info">
+    <h4>التاريخ القبطي اليوم</h4>
+    <!-- يتم تحديث هذا النص تلقائياً عبر الجافاسكريبت -->
+    <p id="coptic-date-display">جاري الحساب...</p>
+  </div>
+  <i data-lucide="calendar" style="color: var(--accent); width: 28px; height: 28px;"></i>
+</div>
+
+
+      <!-- بطاقة آية اليوم -->
+      <div class="verse-card">
+        <h3><i data-lucide="sparkles"></i> آية اليوم</h3>
+        <p id="daily-verse">"سراج لرجلي كلامك ونور لسبيلي."</p>
+        <span id="verse-ref">- مزمور 119: 105</span>
+      </div>
+  
+      <!-- اختصارات سريعة -->
+      <div class="quick-grid"><div class="quick-card" onclick="window.location.href='/hymns'">
+          <i data-lucide="music"></i>
+          <h4>الترانيم</h4>
+          <p>استمع وشارك ترانيمك</p>
+        </div><div class="quick-card" onclick="window.location.href='synaxarium.html'">
+          <i data-lucide="calendar-days"></i>
+          <h4>السنكسار</h4>
+          <p>تذكارات القديسين والشهداء اليوم</p>
+        </div>
+      <div class="quick-card" onclick="window.location.href='agpeya.html'">
+          <i data-lucide="church"></i>
+          <h4>المنجليه </h4>
+          <p>صلوات الأنبياء والأجداد السبع</p>
+        </div>
+
+      <div class="quick-card" onclick="window.location.href='bible.html'">
+          <i data-lucide="book-open-text"></i>
+          <h4>الكتاب المقدس</h4>
+          <p>العهد القديم والجديد بفاندايك</p>
+        </div>
+    <div class="quick-card" onclick="window.location.href='games.html'">
+          <i data-lucide="gamepad-2"></i>
+          <h4>الألعاب الترفيهية</h4>
+          <p>مسابقات وأسئلة كتابية ممتعة</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. قسم السنكسار اليومي -->
+    <section id="synaxarium-view" class="view-section">
+      <h2 class="section-title"><i data-lucide="scroll"></i> السنكسار اليومي</h2> 
+
+      <div class="card">
+        <h3 style="color: var(--accent); margin-bottom: 8px;">تذكار اليوم: ٢٢ بابه</h3>
+        <h4 style="margin-bottom: 12px;">استشهاد القديس لوقا الإنجيلي والرسول</h4>
+        <p style="line-height: 1.8; font-size: 15px;">
+          في مثل هذا اليوم استشهد القديس لوقا الإنجيلي الطبيب والرسول، أحد السبعين رسولاً. ولد في مدينة أنطاكية وكان يتكلم اليونانية وأتقن علوم الطب والفلسفة. كتب إنجيله ونسق سفر أعمال الرسل بإلهام من الروح القدس...
+        </p>
+      </div>
+      <div id="synaxarium">
+  <h2 id="syn-date"></h2>
+  <h3 id="syn-title"></h3>
+  <p id="syn-text"></p>
+</div>
+    </section>
+
+    <!-- 3. قسم الأجبية -->
+    <section id="agpeya-view" class="view-section">
+      <h2 class="section-title"><i data-lucide="book-open"></i> صلوات الأجبية المقدسة</h2>
+      <div class="controls-bar">
+        <button class="btn btn-secondary" onclick="adjustFont(2)"><i data-lucide="plus"></i> تكبير الخط</button>
+        <button class="btn btn-secondary" onclick="adjustFont(-2)"><i data-lucide="minus"></i> تصغير الخط</button>
+      </div>
+      <div class="card" id="agpeya-content">
+        <h3>صلاة باكر</h3>
+        <p style="margin-top: 10px; line-height: 1.8;">
+          باسم الآب والابن والروح القدس الإله الواحد، آمين. ارحمنا يا الله كعظيم رحمتك...
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. قسم الكتاب المقدس -->
+    <section id="bible-view" class="view-section">
+      <h2 class="section-title"><i data-lucide="book"></i> الكتاب المقدس (فاندايك)</h2>
+      <div class="card">
+        <h3>إنجيل متى - الأصحاح الأول</h3>
+        <p style="margin-top: 10px; line-height: 1.8;">
+          1 كتاب ميلاد يسوع المسيح ابن داود ابن إبراهيم.
+          <br>2 إبراهيم ولد إسحق. وإسحق ولد يعقوب. ويعقوب ولد يهوذا وأخوته.
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. قسم الألعاب -->
+    <section id="games-view" class="view-section">
+      <h2 class="section-title"><i data-lucide="gamepad-2"></i> المسابقات والمسابقات الكتابية</h2>
+      <div class="quick-card" style="margin-bottom: 16px;">
+        <h4><i data-lucide="help-circle"></i> مسابقة الأسئلة الكتابية</h4>
+        <p>اختبر معلوماتك في العهدين القديم والجديد عبر مستويات مختلفة.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- شريط التنقل السفلي - شفاف وزجاجي Floating Transparent Glass Bar -->
+  <div class="nav-bar-container">
+    <nav class="nav-bar">
+      <a class="nav-item active" onclick="switchTab('home')">
+        <i data-lucide="home"></i>
+        <span>الرئيسية</span>
+      </a>
+
+ <a class="nav-item" onclick="window.location.href='synaxarium.html'">
+  <i data-lucide="calendar-days"></i>
+  <span>السنكسار</span>
+</a>
+ <a class="nav-item" onclick="window.location.href='agpeya.html'">
+  <i data-lucide="church"></i>
+        <span>المنجليه</span>
+      </a>
+ <a class="nav-item" onclick="window.location.href='bible.html'">
+  <i data-lucide="book-open-text"></i>
+        <span>الكتاب</span>
+      </a>
+ <a class="nav-item" onclick="window.location.href='games.html'">
+        <i data-lucide="gamepad-2"></i>
+        <span>الألعاب</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- JavaScript التفاعلي -->
+  <script>
+    // تفعيل أيقونات Lucide
+    lucide.createIcons();
+
+    // التبديل بين الأقسام بسلاسة
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      const targetSection = document.getElementById(tabId + '-view');
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+
+      // تحديد الأيقونة النشطة
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // الوضع الليلي والنهاري
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', newTheme);
+      
+      themeToggle.innerHTML = newTheme === 'dark' ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+      lucide.createIcons();
+    });
+
+    // تحكم بحجم الخط
+    let currentFontSize = 16;
+    function adjustFont(amount) {
+      currentFontSize += amount;
+      document.querySelectorAll('.view-section p').forEach(p => {
+        p.style.fontSize = currentFontSize + 'px';
+      });
+    }
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>إعدادات الموقع</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f9fc;--surface:#f4f5f8;--surface2:#fcfdff;--text:#1d2440;--muted:#0b0c0e;--line:#1e3a8a;--accent:#9a6b13;--accent-soft:color-mix(in srgb,var(--accent) 14%,transparent);--hero:#1d2440;--shadow:0 10px 40px rgba(29,36,64,.09);--fs:18px;--sf:"Noto Naskh Arabic",serif;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e111d;--surface:#171b2c;--surface2:#1e2338;--text:#ecebf5;--muted:#9296b3;--line:#2a3050;--hero:#171b2c;--shadow:0 10px 40px rgba(0,0,0,.45);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e111d;--surface:#171b2c;--surface2:#1e2338;--text:#ecebf5;--muted:#9296b3;--line:#2a3050;--hero:#171b2c;--shadow:0 10px 40px rgba(0,0,0,.45);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans Arabic",Tahoma,system-ui,sans-serif;font-size:16px;line-height:1.7;transition:background .3s,color .3s}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 20px 110px}
+.head{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.logo{width:58px;height:58px;border-radius:18px;background:var(--hero);display:grid;place-items:center;flex:none;box-shadow:var(--shadow)}
+.logo svg{width:28px;height:28px;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round;fill:none;filter:brightness(1.5)}
+h1{font-size:1.7em;margin:0;font-weight:700;line-height:1.3}
+.sub{color:var(--muted);margin:2px 0 0}
+.layout{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:start}
+nav{background:var(--surface);border-radius:20px;padding:10px;box-shadow:var(--shadow);position:sticky;top:20px;display:flex;flex-direction:column;gap:4px}
+nav button{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;color:var(--muted);font-weight:500;transition:.2s}
+nav button:hover{background:var(--surface2);color:var(--text)}
+nav button[aria-selected=true]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+nav svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.panel{display:none;background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:8px 28px}
+.panel.on{display:block}
+.row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row h3{margin:0;font-size:1em;font-weight:600}
+.row p{margin:2px 0 0;color:var(--muted);font-size:.88em}
+.col{display:block}
+.col .ctl{margin-top:14px}
+.sw{position:relative;width:50px;height:28px;flex:none}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:2}
+.sw span{position:absolute;inset:0;background:var(--line);border-radius:99px;transition:.25s}
+.sw span::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:.25s}
+.sw input:checked+span{background:var(--accent)}
+.sw input:checked+span::after{transform:translateX(-22px)}
+.sw input:focus-visible+span{outline:3px solid var(--accent-soft);outline-offset:2px}
+.seg{display:inline-flex;background:var(--surface2);padding:4px;border-radius:14px;gap:2px;flex-wrap:wrap}
+.seg button{all:unset;cursor:pointer;padding:8px 18px;border-radius:10px;font-weight:500;color:var(--muted);transition:.2s}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.14)}
+button:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+.sws{display:flex;gap:12px;flex-wrap:wrap}
+.sws button{all:unset;cursor:pointer;width:38px;height:38px;border-radius:50%;background:var(--c);display:grid;place-items:center;transition:transform .2s}
+.sws button:hover{transform:scale(1.1)}
+.sws button[aria-pressed=true]{box-shadow:0 0 0 3px var(--surface),0 0 0 6px var(--c)}
+.sws button[aria-pressed=true]::after{content:"✓";color:#fff;font-weight:700}
+select,input[type=text],input[type=email],input[type=time]{font:inherit;color:var(--text);background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:210px}
+input:focus,select:focus{outline:3px solid var(--accent-soft);border-color:var(--accent)}
+input[type=range]{width:260px;accent-color:var(--accent)}
+.ctl-inline{display:flex;align-items:center;gap:14px}
+.verse{margin-top:14px;padding:22px 24px;background:var(--surface2);border-radius:16px;border-right:4px solid var(--accent);font-family:var(--sf);font-size:var(--fs);line-height:2.1}
+.verse small{display:block;font-family:"IBM Plex Sans Arabic",sans-serif;font-size:.7em;color:var(--muted);margin-top:4px}
+.danger{font:inherit;cursor:pointer;border:1px solid #c0343a;color:#c0343a;background:transparent;padding:9px 18px;border-radius:12px;font-weight:600}
+.danger:hover{background:#c0343a;color:#fff}
+.bar{position:fixed;inset:auto 0 0 0;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none}
+.bar div{pointer-events:auto;background:var(--surface);box-shadow:var(--shadow);border:1px solid var(--line);border-radius:18px;padding:10px 12px 10px 18px;display:flex;align-items:center;gap:16px;transform:translateY(140%);transition:transform .35s cubic-bezier(.2,.9,.3,1.2)}
+.bar.show div{transform:none}
+.btn{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:9px 22px;font-weight:600}
+.btn.p{background:var(--accent);color:#fff}
+.btn.g{background:transparent;color:var(--muted)}
+.toast{position:fixed;top:calc(20px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-150%);background:var(--text);color:var(--bg);padding:10px 22px;border-radius:99px;font-weight:600;transition:transform .35s}
+.toast.show{transform:translate(-50%,0)}
+@media (max-width:760px){
+.layout{grid-template-columns:1fr}
+nav{position:static;flex-direction:row;overflow-x:auto}
+nav button{white-space:nowrap;padding:10px 12px}
+.panel{padding:4px 18px}
+.row{flex-wrap:wrap}
+select,input[type=text],input[type=email],input[type=time]{min-width:0;width:100%}
+input[type=range]{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script src="settings.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18M6 9h12"/></svg></div>
+    <div><h1>إعدادات الموقع</h1><p class="sub">خصّص القراءة والتذكيرات بما يناسب صلاتك اليومية.</p></div>
+  </div>
+  <div class="layout">
+    <nav role="tablist" aria-label="الأقسام">
+      <button role="tab" aria-selected="true" data-tab="read"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 21V5M9 8h6"/></svg>القراءة</button>
+      <button role="tab" aria-selected="false" data-tab="remind"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"/></svg>التذكيرات</button>
+      <button role="tab" aria-selected="false" data-tab="look"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2-.6-1.2.2-2.5 1.6-2.5H18a3 3 0 003-3c0-5-4-10.5-9-10.5z"/></svg>المظهر</button>
+      <button role="tab" aria-selected="false" data-tab="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>الحساب</button>
+      <button role="tab" aria-selected="false" data-tab="privacy"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>الخصوصية</button>
+    </nav>
+
+    <main>
+      <section class="panel on" id="read">
+        <div class="row"><div><h3>ترجمة الكتاب المقدس</h3><p>الترجمة المعتمدة في صفحات القراءة والبحث.</p></div>
+          <select data-k="bible" aria-label="الترجمة"><option value="vd">الفاندايك</option><option value="jes">اليسوعية</option><option value="life">كتاب الحياة</option><option value="common">العربية المشتركة</option></select></div>
+        <div class="row"><div><h3>التقويم</h3><p>طريقة عرض التواريخ والأعياد.</p></div>
+          <div class="seg" id="calSeg"><button data-v="cop" aria-pressed="true">قبطي</button><button data-v="greg" aria-pressed="false">ميلادي</button><button data-v="both" aria-pressed="false">الاثنان</button></div></div>
+        <div class="row"><div><h3>التشكيل</h3><p>إظهار الحركات على نص الآيات.</p></div><label class="sw"><input type="checkbox" data-k="tashkeel" checked aria-label="التشكيل"><span></span></label></div>
+        <div class="row"><div><h3>خط النص</h3><p>الخط المستخدم لعرض الآيات والصلوات.</p></div>
+          <select data-k="font" aria-label="الخط"><option value="'Noto Naskh Arabic',serif">نسخ</option><option value="'Amiri',serif">أميري</option><option value="'IBM Plex Sans Arabic',sans-serif">عصري</option></select></div>
+        <div class="row col"><div><h3>حجم الخط</h3><p>اضبطه حتى تقرأ براحة.</p></div>
+          <div class="ctl"><div class="ctl-inline"><input type="range" id="fs" min="15" max="30" value="18" aria-label="حجم الخط"><b id="fsv">18</b></div>
+          <div class="verse"><span id="vtxt"></span><small>مزمور ٢٣: ١ — معاينة الخط</small></div></div></div>
+      </section>
+
+      <section class="panel" id="remind">
+        <div class="row"><div><h3>آية اليوم</h3><p>آية قصيرة تبدأ بها يومك.</p></div><label class="sw"><input type="checkbox" data-k="verse" checked aria-label="آية اليوم"><span></span></label></div>
+        <div class="row"><div><h3>وقت آية اليوم</h3><p>متى يصلك التذكير؟</p></div><input type="time" data-k="vtime" value="07:00" aria-label="وقت آية اليوم"></div>
+        <div class="row"><div><h3>ساعات الأجبية</h3><p>تنبيه قبل كل ساعة من ساعات الصلاة السبع.</p></div><label class="sw"><input type="checkbox" data-k="agpeya" aria-label="الأجبية"><span></span></label></div>
+        <div class="row"><div><h3>قراءات اليوم</h3><p>فصول القداس والمزامير المقررة لكل يوم.</p></div><label class="sw"><input type="checkbox" data-k="readings" checked aria-label="قراءات اليوم"><span></span></label></div>
+        <div class="row"><div><h3>الأصوام والأعياد</h3><p>تنبيه قبل بداية الصوم أو العيد بيوم.</p></div><label class="sw"><input type="checkbox" data-k="feasts" checked aria-label="الأصوام والأعياد"><span></span></label></div>
+        <div class="row"><div><h3>أصوات التنبيه</h3><p>جرس هادئ عند وصول التذكير.</p></div><label class="sw"><input type="checkbox" data-k="sound" aria-label="الأصوات"><span></span></label></div>
+      </section>
+
+      <section class="panel" id="look">
+        <div class="row"><div><h3>السمة</h3><p>فاتح أو داكن، أو حسب جهازك.</p></div>
+          <div class="seg" id="themeSeg"><button data-v="auto" aria-pressed="true">تلقائي</button><button data-v="light" aria-pressed="false">فاتح</button><button data-v="dark" aria-pressed="false">داكن</button></div></div>
+        <div class="row"><div><h3>لون التمييز</h3><p>يتغير في الأزرار والمفاتيح فورًا.</p></div>
+          <div class="sws" id="sws">
+            <button style="--c:#9a6b13" data-v="#9a6b13" aria-label="ذهبي" aria-pressed="true"></button>
+            <button style="--c:#2f4a9e" data-v="#2f4a9e" aria-label="أزرق ملكي" aria-pressed="false"></button>
+            <button style="--c:#8b2635" data-v="#8b2635" aria-label="عنابي" aria-pressed="false"></button>
+            <button style="--c:#4d6b3a" data-v="#4d6b3a" aria-label="زيتوني" aria-pressed="false"></button>
+            <button style="--c:#6b4aa0" data-v="#6b4aa0" aria-label="بنفسجي" aria-pressed="false"></button>
+          </div></div>
+      </section>
+
+      <section class="panel" id="account">
+        <div class="row"><div><h3>الاسم</h3><p>يظهر في تعليقاتك وطلبات الصلاة.</p></div><input type="text" data-k="name" value="" placeholder="اكتب اسمك" aria-label="الاسم"></div>
+        <div class="row"><div><h3>البريد الإلكتروني</h3><p>نرسل إليه رسائل الموقع المهمة.</p></div><input type="email" data-k="email" value="" placeholder="name@example.com" aria-label="البريد الإلكتروني" dir="ltr"></div>
+        <div class="row"><div><h3>الكنيسة</h3><p>لعرض المحتوى والمناسبات الأقرب لك.</p></div>
+          <select data-k="church" aria-label="الكنيسة"><option value="">غير محدد</option><option value="orth">أرثوذكسية</option><option value="cath">كاثوليكية</option><option value="evan">إنجيلية</option></select></div>
+      </section>
+
+      <section class="panel" id="privacy">
+        <div class="row"><div><h3>طلبات الصلاة باسم مستعار</h3><p>لا يظهر اسمك عند مشاركة طلب صلاة.</p></div><label class="sw"><input type="checkbox" data-k="anon" checked aria-label="طلبات الصلاة"><span></span></label></div>
+        <div class="row"><div><h3>إظهار ملاحظاتي للآخرين</h3><p>ملاحظاتك على الآيات خاصة بك افتراضيًا.</p></div><label class="sw"><input type="checkbox" data-k="notes" aria-label="الملاحظات"><span></span></label></div>
+        <div class="row"><div><h3>حذف الحساب</h3><p>سيُحذف حسابك وملاحظاتك نهائيًا.</p></div><button class="danger" id="del">حذف الحساب</button></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="bar" id="bar"><div><span>لديك تغييرات غير محفوظة</span><button class="btn g" id="reset">تراجع</button><button class="btn p" id="save">حفظ التغييرات</button></div></div>
+<div class="toast" id="toast" role="status">تم الحفظ</div>
+
+<script>
+(function(){
+var root=document.documentElement,$=function(s){return document.querySelector(s)},$$=function(s){return[].slice.call(document.querySelectorAll(s))};
+var KEY="church-settings-v1",VERSE="الرَّبُّ رَاعِيَّ فَلاَ يُعْوِزُنِي شَيْءٌ.";
+var fields=$$("[data-k]"),cur={},saved={};
+fields.forEach(function(f){cur[f.dataset.k]=f.type==="checkbox"?f.checked:f.value});
+cur.theme="auto";cur.accent="#9a6b13";cur.fs=18;cur.cal="cop";
+try{var s=localStorage.getItem(KEY);if(s)Object.assign(cur,JSON.parse(s))}catch(e){}
+saved=JSON.parse(JSON.stringify(cur));
+function apply(){
+  fields.forEach(function(f){if(f.type==="checkbox")f.checked=!!cur[f.dataset.k];else f.value=cur[f.dataset.k]});
+  if(cur.theme==="auto")root.removeAttribute("data-theme");else root.setAttribute("data-theme",cur.theme);
+  root.style.setProperty("--accent",cur.accent);root.style.setProperty("--fs",cur.fs+"px");root.style.setProperty("--sf",cur.font);
+  $$("#themeSeg button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.v===cur.theme)});
+  $$("#calSeg button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.v===cur.cal)});
+  $$("#sws button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.v===cur.accent)});
+  $("#fs").value=cur.fs;$("#fsv").textContent=cur.fs;
+  $("#vtxt").textContent=cur.tashkeel?VERSE:VERSE.replace(/[\u064B-\u0652\u0670]/g,"");
+  $("#bar").classList.toggle("show",JSON.stringify(cur)!==JSON.stringify(saved));
+}
+fields.forEach(function(f){var h=function(){cur[f.dataset.k]=f.type==="checkbox"?f.checked:f.value;apply()};f.addEventListener("input",h);f.addEventListener("change",h)});
+function seg(id,key){$(id).addEventListener("click",function(e){var b=e.target.closest("button");if(b){cur[key]=b.dataset.v;apply()}})}
+seg("#themeSeg","theme");seg("#calSeg","cal");seg("#sws","accent");
+$("#fs").addEventListener("input",function(e){cur.fs=+e.target.value;apply()});
+$("#reset").onclick=function(){cur=JSON.parse(JSON.stringify(saved));apply()};
+$("#save").onclick=function(){
+  saved=JSON.parse(JSON.stringify(cur));
+  try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}
+  apply();var t=$("#toast");t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2000);
+};
+$("#del").onclick=function(){alert("هذا عرض تجريبي، لن يتم حذف أي شيء.")};
+$$("nav [data-tab]").forEach(function(b){b.addEventListener("click",function(){
+  $$("nav [data-tab]").forEach(function(x){x.setAttribute("aria-selected",x===b)});
+  $$(".panel").forEach(function(p){p.classList.toggle("on",p.id===b.dataset.tab)});
+})});
+apply();
+})();
+</script>
+<a href="./home.html" style="position:fixed;bottom:16px;left:16px;background:#1e3a8a;color:#fff;padding:8px 14px;border-radius:10px;font-family:Cairo,sans-serif;text-decoration:none;z-index:999">الرئيسية</a>
+<a href="./hymns" style="position:fixed;bottom:16px;left:110px;background:#d4af37;color:#1e3a8a;padding:8px 14px;border-radius:10px;font-family:Cairo,sans-serif;text-decoration:none;z-index:999">الترانيم</a>
+</body>
+</html>

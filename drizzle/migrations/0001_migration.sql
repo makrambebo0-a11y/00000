@@ -1,0 +1,1 @@
+create policy "anyone reads hymn audio" on storage.objects for select to anon, authenticated using (bucket_id = 'hymns');

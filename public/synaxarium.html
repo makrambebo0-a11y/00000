@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نور الحياة | Coptic Faith Portal</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- ستايل التقويم -->
+  <style>
+    #copticCal {
+      --cc-bg:#f3f5fb; --cc-card:#fff; --cc-text:#1b2340; --cc-day:#eef1fa; --cc-hover:#dfe6fb;
+      --cc-from:#1e3a8a; --cc-to:#3b5bdb; --cc-gold:#d4a63a; --cc-shadow:0 6px 20px rgba(30,58,138,.12);
+      display: block; position: relative;
+      width: 100%; max-width: 1000px; margin: 20px auto;
+      padding: 20px; border-radius: 22px;
+      background: var(--cc-bg); color: var(--cc-text);
+      font-family: "Cairo", sans-serif; direction: rtl;
+    }
+    #copticCal[data-theme="dark"] {
+      --cc-bg:#0d1220; --cc-card:#161d33; --cc-text:#e8ecf8; --cc-day:#1f2846; --cc-hover:#2b3763;
+      --cc-from:#2a3f9e; --cc-to:#4a66e0; --cc-shadow:0 6px 20px rgba(0,0,0,.4);
+    }
+    #copticCal *, #copticCal *::before, #copticCal *::after { box-sizing: border-box; }
+
+    #copticCal .cc-top { position: static; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 20px; width: 100%; }
+    #copticCal .cc-top h1 { margin: 0; font-size: 26px; font-weight: 700; color: var(--cc-text); }
+    #copticCal .cc-top h1 span { color: var(--cc-gold); }
+    #copticCal .cc-today { font-size: 14px; opacity: .75; margin-top: 4px; color: var(--cc-text); }
+    #copticCal .cc-theme { position: static; border: none; cursor: pointer; font-size: 20px; width: 44px; height: 44px; border-radius: 50%; background: var(--cc-card); box-shadow: var(--cc-shadow); }
+
+    #copticCal .cc-year { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+    #copticCal .cc-month { background: var(--cc-card); border-radius: 18px; box-shadow: var(--cc-shadow); overflow: hidden; transition: transform .25s; animation: ccRise .5s ease both; }
+    #copticCal .cc-month:hover { transform: translateY(-4px); }
+    #copticCal .cc-month.cc-nasi { grid-column: 2; }
+    #copticCal .cc-month h3 { margin: 0; padding: 14px; text-align: center; color: #fff; font-size: 17px; font-weight: 700; background: linear-gradient(135deg, var(--cc-from), var(--cc-to)); border-bottom: 3px solid var(--cc-gold); }
+    #copticCal .cc-month h3 small { opacity: .75; font-weight: 400; margin-inline-end: 6px; }
+
+    #copticCal .cc-days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 12px; }
+    #copticCal .cc-nasi .cc-days { grid-template-columns: repeat(6, 1fr); }
+    #copticCal .cc-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--cc-day); color: var(--cc-text) !important; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform .15s, background .15s; }
+    #copticCal .cc-day:hover { background: var(--cc-hover); transform: scale(1.12); }
+    #copticCal .cc-day.cc-todayCell { background: linear-gradient(135deg, #f3d37a, var(--cc-gold)); color: #3a2a00 !important; font-weight: 700; box-shadow: 0 0 0 3px rgba(212,166,58,.35); }
+
+    @keyframes ccRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @media (max-width: 800px) { #copticCal .cc-year { grid-template-columns: repeat(2, 1fr); } #copticCal .cc-month.cc-nasi { grid-column: auto; } }
+    @media (max-width: 520px) { #copticCal .cc-year { grid-template-columns: 1fr; } #copticCal .cc-top h1 { font-size: 21px; } }
+  </style>
+<script src="settings.js"></script>
+</head>
+
+<body data-theme="light">
+
+<!-- ===== الشريط العلوي (مرة واحدة بس) ===== -->
+<div class="top-navigation-wrapper">
+
+  <nav class="top-nav-bar">
+    <div class="top-nav-links">
+      <a href="./hymns" class="top-nav-item">ترانيم</a>
+
+      <div class="dropdown-container">
+        <a href="home.html" class="top-nav-item active">صفحه رئيسيه</a>
+
+
+      </div>
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">المسيحيه</a>
+        <div class="dropdown-menu">
+          <a href="#"> الله تبارك اسمه</a>
+          <a href="#">لا إله إلا الله: وحدانية الله في المسيحية</a>
+          <a href="#"> ما هو الكتاب المقدس، وأقسامه؟</a>
+        </div>
+      </div>
+
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">الكتاب المقدس</a>
+        <div class="dropdown-menu">
+          <a href="#">العهد القديم</a>
+          <a href="#">العهد الجديد</a>
+          <a href="#">معلومات عن الكتب المقدسة</a>
+        </div>
+      </div>
+
+      <div class="dropdown-container">
+        <a href="#" class="top-nav-item active">كتب</a>
+        <div class="dropdown-menu">
+          <a href="#">الأجبية</a>
+        </div>
+      </div>
+
+      <a href="#" class="top-nav-item">طقس</a>
+      <a href="#" class="top-nav-item">عقيدة</a>
+      <a href="#" class="top-nav-item">تاريخ</a>
+      <a href="#" class="top-nav-item">أسئلة</a>
+      <a href="#" class="top-nav-item">خدمة</a>
+    </div>
+  </nav>
+
+  <div class="sub-header-bar">
+    <div class="left-tools">
+      <button class="tool-btn"><i data-lucide="settings"></i> خيارات</button>
+      <button class="tool-btn lang-btn">En</button>
+      <button class="tool-btn">أطفال</button>
+    </div>
+
+    <!-- مربع البحث -->
+    <div id="poda">
+      <div class="glow"></div>
+      <div class="darkBorderBg"></div>
+      <div class="darkBorderBg"></div>
+      <div class="darkBorderBg"></div>
+      <div class="white"></div>
+      <div class="border"></div>
+
+      <div id="main">
+        <input class="input" name="text" type="text" placeholder="بحث..." />
+        <div id="pink-mask"></div>
+        <div class="filterBorder"></div>
+        <div id="filter-icon">
+          <svg fill="none" viewBox="4.8 4.56 14.832 15.408" width="27" height="27" preserveAspectRatio="none">
+            <path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1" stroke="#d6d6e6"
+              d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"></path>
+          </svg>
+        </div>
+        <div id="search-icon">
+          <svg class="feather feather-search" fill="none" height="24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="url(#search)"></circle>
+            <line x1="22" x2="16.65" y1="22" y2="16.65" stroke="url(#searchl)"></line>
+            <defs>
+              <linearGradient id="search" gradientTransform="rotate(50)">
+                <stop offset="0%" stop-color="#f8e7f8"></stop>
+                <stop offset="50%" stop-color="#b6a9b7"></stop>
+              </linearGradient>
+              <linearGradient id="searchl">
+                <stop offset="0%" stop-color="#b6a9b7"></stop>
+                <stop offset="50%" stop-color="#837484"></stop>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- ===== نهاية الشريط العلوي ===== -->
+
+
+<!-- ===== التقويم ===== -->
+<section id="copticCal">
+  <div class="cc-top">
+    <div>
+      <h1>التقويم <span>القبطي</span></h1>
+      <div class="cc-today" id="ccTodayLabel"></div>
+    </div>
+    <button class="cc-theme" id="ccThemeBtn" title="الوضع الليلي">🌙</button>
+  </div>
+  <div class="cc-year" id="ccYear"></div>
+</section>
+
+
+<!-- ===== السكريبتات: مرة واحدة بس، في آخر الصفحة ===== -->
+<script>
+(function () {
+  const months = ["توت","بابة","هاتور","كيهك","طوبة","أمشير","برمهات","برمودة","بشنس","بؤونة","أبيب","مسرى","نسئ"];
+
+  function toCoptic(date) {
+    const y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+    const a = Math.floor((14 - m) / 12), yy = y + 4800 - a, mm = m + 12 * a - 3;
+    const jdn = d + Math.floor((153 * mm + 2) / 5) + 365 * yy +
+                Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400) - 32045;
+    const n = jdn - 1825030, y0 = Math.floor((4 * n + 3) / 1461);
+    const doy = n - Math.floor(1461 * y0 / 4);
+    return { year: y0 + 1, month: Math.floor(doy / 30) + 1, day: (doy % 30) + 1 };
+  }
+
+  const today = toCoptic(new Date());
+  document.getElementById("ccTodayLabel").textContent =
+    `اليوم: ${today.day} ${months[today.month - 1]} ${today.year}`;
+
+  const yearBox = document.getElementById("ccYear");
+  for (let m = 1; m <= 13; m++) {
+    const isNasi = m === 13;
+    const box = document.createElement("div");
+    box.className = "cc-month" + (isNasi ? " cc-nasi" : "");
+    box.style.animationDelay = (m * 0.04) + "s";
+    box.innerHTML = `<h3><small>${m}-</small>شهر ${months[m - 1]}</h3><div class="cc-days"></div>`;
+    const days = box.querySelector(".cc-days");
+    for (let d = 1; d <= (isNasi ? 6 : 30); d++) {
+      const cell = document.createElement("div");
+      cell.className = "cc-day";
+      cell.textContent = d;
+      if (m === today.month && d === today.day) cell.classList.add("cc-todayCell");
+      cell.addEventListener("click", () => { location.href = `day.html?m=${m}&d=${d}`; });
+      days.appendChild(cell);
+    }
+    yearBox.appendChild(box);
+  }
+
+  const root = document.getElementById("copticCal"), btn = document.getElementById("ccThemeBtn");
+  function setTheme(t) {
+    root.dataset.theme = t; btn.textContent = t === "dark" ? "☀️" : "🌙";
+    try { localStorage.setItem("theme", t); } catch (e) {}
+  }
+  let saved = null; try { saved = localStorage.getItem("theme"); } catch (e) {}
+  setTheme(saved === "dark" ? "dark" : "light");
+  btn.onclick = () => setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+})();
+
+/* أيقونات lucide (زرار الخيارات) */
+if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- سكريبت الموقع الأساسي: مرة واحدة. ما نحتاجش synaxarium.js هنا -->
+<script src="00.js"></script>
+
+</body>
+</html>

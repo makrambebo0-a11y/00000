@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>الخيارات | نور الحياة</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --outer:#dfe4f5; --bg:#eef1fa; --card:#fff; --text:#1b2340; --sub:#5b6585; --line:#d5dcf3;
+          --navy:#151e73; --navy2:#2a3ba8; --gold:#e0a437; --shadow:0 6px 18px rgba(21,30,115,.12); }
+  :root[data-theme="dark"] { --outer:#04060d; --bg:#080b16; --card:#131a30; --text:#e8ecf8; --sub:#9aa5cf; --line:#2a3566; --shadow:0 6px 18px rgba(0,0,0,.5); }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--outer); color:var(--text); font-family:"Cairo",sans-serif; }
+  #page { max-width:620px; min-height:100vh; margin:0 auto; background:var(--bg); padding-bottom:50px; transition:background .3s; }
+
+  .hd { position:sticky; top:0; z-index:30; height:64px; display:flex; align-items:center; justify-content:center; color:#fff;
+        background:linear-gradient(135deg,var(--navy),var(--navy2)); border-radius:0 0 24px 24px; box-shadow:var(--shadow); }
+  .hd h1 { margin:0; font-size:20px; }
+  .hd button { position:absolute; right:10px; top:10px; width:44px; height:44px; border:none; background:none; color:#fff; font-size:32px; cursor:pointer; }
+
+  .grp { margin:22px 18px 0; }
+  .grp > h2 { margin:0 4px 10px; font-size:15px; color:var(--sub); font-weight:700; }
+  .card { padding:18px; border-radius:20px; background:var(--card); border:1px solid var(--line); box-shadow:var(--shadow); }
+  .card + .card { margin-top:12px; }
+  .lbl { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; font-weight:700; }
+  .lbl b { color:var(--gold); font-weight:700; }
+
+  /* أزرار الاختيار */
+  .seg { display:flex; gap:8px; padding:5px; border-radius:16px; background:var(--bg); }
+  .seg button { flex:1; padding:11px 6px; border:none; border-radius:12px; cursor:pointer; background:none; color:var(--text);
+                font:600 15px "Cairo",sans-serif; transition:.2s; }
+  .seg button.on { color:#fff; background:linear-gradient(135deg,var(--navy),var(--navy2)); box-shadow:var(--shadow); }
+
+  /* المنزلقات */
+  input[type=range] { width:100%; direction:ltr; accent-color:var(--navy2); height:32px; cursor:pointer; }
+
+  /* المعاينة */
+  .pv { padding:18px 20px; border-radius:20px; background:var(--card); border:2px dashed var(--line); text-align:center;
+        font:400 var(--pfs,26px)/var(--plh,2.15) var(--pff,"Amiri"),serif; }
+  .pv small { display:block; font:600 12px "Cairo",sans-serif; color:var(--sub); margin-bottom:6px; }
+
+  .btn { width:100%; margin-top:6px; padding:15px; border-radius:16px; cursor:pointer; font:700 16px "Cairo",sans-serif;
+         color:#c0392b; background:var(--card); border:1.5px solid #c0392b; }
+  .btn:active { background:#c0392b; color:#fff; }
+
+  #toast { position:fixed; bottom:30px; left:50%; transform:translate(-50%,30px); opacity:0; pointer-events:none; padding:10px 22px;
+           border-radius:24px; background:var(--navy); color:#fff; font-weight:600; transition:.3s; z-index:50; }
+  #toast.show { opacity:1; transform:translate(-50%,0); }
+</style>
+<script src="settings.js"></script>
+</head>
+<body>
+
+<div id="page">
+  <div class="hd"><button id="back">›</button><h1>الخيارات</h1></div>
+
+  <div class="grp">
+    <h2>المظهر</h2>
+    <div class="card">
+      <div class="lbl">وضع الألوان</div>
+      <div class="seg" id="segTheme">
+        <button data-v="light">☀️ فاتح</button>
+        <button data-v="dark">🌙 داكن</button>
+        <button data-v="auto">🖥 تلقائي</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <h2>القراءة</h2>
+    <div class="card">
+      <div class="lbl">حجم الخط <b id="fsV"></b></div>
+      <input type="range" id="fs" min="16" max="46" step="2">
+    </div>
+    <div class="card">
+      <div class="lbl">تباعد الأسطر <b id="lhV"></b></div>
+      <input type="range" id="lh" min="1.6" max="2.8" step="0.1">
+    </div>
+    <div class="card">
+      <div class="lbl">نوع الخط</div>
+      <div class="seg" id="segFont">
+        <button data-v="amiri">أميري (كتابي)</button>
+        <button data-v="cairo">كايرو (حديث)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <h2>معاينة</h2>
+    <div class="pv"><small>هكذا سيظهر النص في الأجبية والكتب</small>الرَّبُّ رَاعِيَّ فَلا يُعْوِزُنِي شَيْءٌ</div>
+  </div>
+
+  <div class="grp"><button class="btn" id="reset">إعادة الإعدادات الافتراضية</button></div>
+</div>
+<div id="toast">تم الحفظ ✓</div>
+
+<script>
+(function () {
+  const $ = s => document.querySelector(s), root = document.documentElement;
+  const get = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const put = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+  const del = k => { try { localStorage.removeItem(k); } catch (e) {} };
+
+  const S = { theme:get("theme") || "light", fs:parseInt(get("fs")) || 26, lh:parseFloat(get("lh")) || 2.15, ff:get("ff") || "amiri" };
+
+  function apply() {
+    root.dataset.theme = S.theme === "auto" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : S.theme;
+    root.style.setProperty("--pfs", S.fs + "px");
+    root.style.setProperty("--plh", S.lh);
+    root.style.setProperty("--pff", S.ff === "cairo" ? "Cairo" : "Amiri");
+    $("#fs").value = S.fs; $("#fsV").textContent = S.fs + "px";
+    $("#lh").value = S.lh; $("#lhV").textContent = S.lh.toFixed(1);
+    document.querySelectorAll("#segTheme button").forEach(b => b.classList.toggle("on", b.dataset.v === S.theme));
+    document.querySelectorAll("#segFont button").forEach(b => b.classList.toggle("on", b.dataset.v === S.ff));
+  }
+
+  let tm; function toast(t) { const e = $("#toast"); e.textContent = t || "تم الحفظ ✓"; e.classList.add("show"); clearTimeout(tm); tm = setTimeout(() => e.classList.remove("show"), 1200); }
+  function save(k, v) { S[k] = v; put(k, v); if (k === "fs") put("rdSize", v); apply(); toast(); }
+
+  document.querySelectorAll("#segTheme button").forEach(b => b.onclick = () => save("theme", b.dataset.v));
+  document.querySelectorAll("#segFont button").forEach(b => b.onclick = () => save("ff", b.dataset.v));
+  $("#fs").oninput = e => save("fs", parseInt(e.target.value));
+  $("#lh").oninput = e => save("lh", parseFloat(e.target.value));
+
+  $("#reset").onclick = () => {
+    ["theme", "fs", "lh", "ff"].forEach(del);
+    Object.assign(S, { theme:"light", fs:26, lh:2.15, ff:"amiri" }); apply(); toast("تمت إعادة الضبط");
+  };
+
+  $("#back").onclick = () => { history.length > 1 ? history.back() : (location.href = "home.html"); };
+  apply();
+})();
+</script>
+</body>
+</html>

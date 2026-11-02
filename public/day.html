@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سنكسار اليوم</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f3f5fb; --card:#fff; --text:#1b2340; --gold:#d4a63a; --from:#1e3a8a; --to:#3b5bdb; --shadow:0 6px 20px rgba(30,58,138,.10); }
+  :root[data-theme="dark"] { --bg:#0d1220; --card:#161d33; --text:#e8ecf8; --from:#2a3f9e; --to:#4a66e0; --shadow:0 6px 20px rgba(0,0,0,.4); }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:24px 16px 48px; background:var(--bg); color:var(--text); font-family:"Cairo",sans-serif; }
+  .wrap { max-width: 760px; margin: auto; }
+  .card { background:var(--card); border-radius:18px; box-shadow:var(--shadow); overflow:hidden; }
+  .card h1 { margin:0; padding:18px; text-align:center; font-size:22px; color:#fff;
+    background:linear-gradient(135deg,var(--from),var(--to)); border-bottom:3px solid var(--gold); }
+  #content { padding:24px; font-size:19px; line-height:2; white-space:pre-wrap; color:var(--text); }
+  .nav { display:flex; justify-content:space-between; gap:10px; margin-top:18px; }
+  .nav button {
+    flex:1; padding:12px; border:none; border-radius:12px; cursor:pointer;
+    background:var(--card); color:var(--text); font:inherit; font-weight:600;
+    box-shadow:var(--shadow); transition:transform .15s;
+  }
+  .nav button:hover { transform:translateY(-3px); }
+  .size { display:flex; gap:8px; justify-content:center; margin-bottom:14px; }
+  .size button { border:none; cursor:pointer; padding:8px 16px; border-radius:10px; background:var(--card); color:var(--text); font:inherit; box-shadow:var(--shadow); }
+</style>
+<script src="settings.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="size">
+    <button id="plus">أ +</button>
+    <button id="minus">أ −</button>
+  </div>
+
+  <div class="card">
+    <h1 id="title"></h1>
+    <div id="content">جاري التحميل...</div>
+  </div>
+
+  <div class="nav">
+    <button id="next">اليوم التالي ›</button>
+    <button id="home">🗓 التقويم</button>
+    <button id="prev">‹ اليوم السابق</button>
+  </div>
+</div>
+
+<!-- ملف البيانات اللي طلع من build.py (لو مش موجود الصفحة هتحاول تقرا txt مباشرة) -->
+<script src="synaxarium-data.js"></script>
+
+<script>
+const months = ["توت","بابة","هاتور","كيهك","طوبة","أمشير","برمهات","برمودة","بشنس","بؤونة","أبيب","مسرى","نسئ"];
+
+/* ===== غيري اسم صفحة التقويم هنا لو مختلف ===== */
+const CALENDAR_PAGE = "synaxarium.html";
+
+const params = new URLSearchParams(location.search);
+let m = parseInt(params.get("m")) || 1;
+let d = parseInt(params.get("d")) || 1;
+
+const box = document.getElementById("content");
+
+/* عرض يوم معين من غير ما الصفحة تتعمل لها reload */
+function render() {
+  const key = m + "-" + d;
+  document.getElementById("title").textContent = d + " " + months[m - 1];
+  document.title = "سنكسار " + d + " " + months[m - 1];
+  window.scrollTo(0, 0);
+
+  try { history.replaceState(null, "", "?m=" + m + "&d=" + d); } catch (e) {}
+
+  if (typeof SYN !== "undefined") {
+    box.textContent = SYN[key] || "لا يوجد نص لهذا اليوم بعد.";
+  } else {
+    box.textContent = "جاري التحميل...";
+    fetch("synaxarium/" + key + ".txt")
+      .then(r => { if (!r.ok) throw new Error("404"); return r.text(); })
+      .then(t => { if (m + "-" + d === key) box.textContent = t; })
+      .catch(() => { if (m + "-" + d === key) box.textContent = "لا يوجد نص لهذا اليوم بعد."; });
+  }
+}
+
+function nextDay() {
+  const last = (m === 13) ? 6 : 30;
+  if (d < last) d++; else { d = 1; m = (m === 13) ? 1 : m + 1; }
+  render();
+}
+function prevDay() {
+  if (d > 1) d--; else { m = (m === 1) ? 13 : m - 1; d = (m === 13) ? 6 : 30; }
+  render();
+}
+
+document.getElementById("next").onclick = nextDay;
+document.getElementById("prev").onclick = prevDay;
+document.getElementById("home").onclick = () => { location.href = CALENDAR_PAGE; };
+
+/* الأسهم في الكيبورد: يمين = السابق، شمال = التالي (عشان الصفحة RTL) */
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") nextDay();
+  if (e.key === "ArrowRight") prevDay();
+});
+
+render();
+
+/* تكبير وتصغير الخط */
+let size = 19;
+document.getElementById("plus").onclick  = () => box.style.fontSize = (++size) + "px";
+document.getElementById("minus").onclick = () => box.style.fontSize = (--size) + "px";
+
+/* الوضع الليلي */
+try { if (localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) {}
+</script>
+<a href="./home.html" style="position:fixed;bottom:16px;left:16px;background:#1e3a8a;color:#fff;padding:8px 14px;border-radius:10px;font-family:Cairo,sans-serif;text-decoration:none;z-index:999">الرئيسية</a>
+<a href="./hymns" style="position:fixed;bottom:16px;left:110px;background:#d4af37;color:#1e3a8a;padding:8px 14px;border-radius:10px;font-family:Cairo,sans-serif;text-decoration:none;z-index:999">الترانيم</a>
+</body>
+</html>

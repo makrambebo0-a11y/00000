@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ألعاب الأطفال</title>
+<style>
+  :root {
+    --navy:#141f73; --blue:#3447a0; --orange:#f08030; --ok:#2ecc71; --no:#ff5a5f;
+    --bg:#f4f6ff; --card:#ffffff; --text:#1d2140; --muted:#6b7090; --line:#e3e6f5;
+    --shadow:0 8px 24px -10px rgba(30,40,110,.25);
+    --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#10121c; --card:#1b1e2e; --text:#eceefb; --muted:#9aa0c4; --line:#2b2f47; --shadow:0 8px 24px -10px rgba(0,0,0,.6); }
+  }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:"Tajawal","Cairo","Segoe UI",Tahoma,sans-serif; }
+  button { font-family:inherit; color:inherit; }
+
+  header { position:sticky; top:0; z-index:20; background:linear-gradient(135deg,var(--navy),var(--blue)); color:#fff; text-align:center;
+    padding:calc(14px + env(safe-area-inset-top,0px)) 70px 14px; font-size:22px; font-weight:800; box-shadow:0 6px 20px -8px rgba(20,31,115,.7); }
+  header a { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#fff; text-decoration:none; font-size:30px; line-height:1; padding:4px 10px; border-radius:12px; transition:background .2s; }
+  header a:hover { background:#ffffff22; }
+  #stars { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:16px; background:#ffffff26; padding:6px 12px; border-radius:999px; backdrop-filter:blur(6px); }
+  #stars.bump { animation:bump .5s var(--ease); }
+  @keyframes bump { 40% { transform:translateY(-50%) scale(1.25); } }
+
+  .wrap { max-width:680px; margin:0 auto; padding:18px 14px 50px; }
+  .view { animation:viewIn .4s var(--ease); }
+  @keyframes viewIn { from { opacity:0; transform:translateY(14px) scale(.98); } }
+
+  .sec { margin:22px 4px 12px; font-size:19px; font-weight:800; display:flex; align-items:center; gap:8px; }
+  .sec::after { content:""; flex:1; height:2px; background:var(--line); border-radius:2px; }
+  .grid { display:grid; gap:12px; }
+  .g1 { grid-template-columns:1fr; } .g2 { grid-template-columns:repeat(2,1fr); } .g3 { grid-template-columns:repeat(3,1fr); }
+  .g4 { grid-template-columns:repeat(4,1fr); } .g5 { grid-template-columns:repeat(5,1fr); }
+  #home .grid { grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); }
+
+  .tile { display:flex; flex-direction:column; align-items:center; gap:10px; background:var(--card); border:2px solid var(--line); border-radius:22px;
+    padding:18px 10px 16px; cursor:pointer; font-size:16px; font-weight:700; box-shadow:var(--shadow); transition:transform .2s var(--ease), box-shadow .2s, border-color .2s;
+    opacity:0; animation:tileIn .5s var(--ease) forwards; }
+  @keyframes tileIn { from { opacity:0; transform:translateY(16px) scale(.96); } to { opacity:1; transform:none; } }
+  .tile .ic { width:66px; height:66px; border-radius:20px; background:var(--c); display:grid; place-items:center; font-size:34px; box-shadow:0 10px 18px -8px var(--c); transition:transform .25s var(--ease); }
+  @media (hover:hover) { .tile:hover { transform:translateY(-4px); border-color:var(--c); } .tile:hover .ic { transform:rotate(-8deg) scale(1.08); } }
+  .tile:active { transform:scale(.95); }
+
+  #game { display:none; }
+  .top { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .top h2 { margin:0; font-size:21px; flex:1; font-weight:800; }
+  .backbtn { background:var(--card); border:2px solid var(--line); border-radius:14px; padding:10px 16px; font-size:15px; font-weight:700; cursor:pointer; box-shadow:var(--shadow); transition:transform .15s; }
+  .backbtn:active { transform:scale(.94); }
+
+  .opt, .card { min-height:66px; font-size:21px; font-weight:800; background:var(--card); border:2px solid var(--line); border-radius:18px; cursor:pointer; box-shadow:var(--shadow);
+    transition:transform .15s var(--ease), background .2s, border-color .2s, color .2s, opacity .2s; }
+  @media (hover:hover) { .opt:not(:disabled):hover, .card:not(.open):hover { transform:translateY(-3px); border-color:var(--blue); } }
+  .opt:not(:disabled):active, .card:active { transform:scale(.95); }
+  .opt.emoji { font-size:40px; }
+  .opt.long { font-size:18px; padding:12px 14px; line-height:1.6; text-align:center; position:relative; }
+  .opt.ok, .card.ok { background:var(--ok); border-color:var(--ok); color:#fff; opacity:1; animation:pop .35s var(--ease); }
+  .opt.no { background:var(--no); border-color:var(--no); color:#fff; opacity:1; animation:sh .35s; }
+  .opt:disabled { opacity:.5; cursor:default; }
+  .opt[data-n]::before { content:attr(data-n); position:absolute; right:10px; top:50%; transform:translateY(-50%); width:28px; height:28px; border-radius:50%; background:#ffffff40; display:grid; place-items:center; font-size:15px; }
+  .card { height:84px; font-size:36px; transform-style:preserve-3d; }
+  .card.open { background:linear-gradient(135deg,#ffe08a,#ffc14d); color:#222; border-color:var(--orange); animation:flip .35s var(--ease); }
+  @keyframes flip { from { transform:rotateY(90deg); } }
+  @keyframes pop { 50% { transform:scale(1.08); } }
+  .shake { animation:sh .35s; }
+  @keyframes sh { 25% { transform:translateX(-7px); } 75% { transform:translateX(7px); } }
+
+  .bar { height:10px; background:var(--line); border-radius:999px; overflow:hidden; }
+  .bar i { display:block; height:100%; background:linear-gradient(90deg,var(--orange),#ffc14d); border-radius:999px; transition:width .5s var(--ease); }
+  .info { text-align:center; font-size:18px; margin:12px 0; color:var(--muted); font-weight:700; }
+  .big { font-size:46px; text-align:center; margin:14px 0 18px; font-weight:800; }
+  .huge { font-size:76px; text-align:center; margin:8px 0 6px; }
+  .dot { width:120px; height:120px; border-radius:50%; margin:12px auto 18px; box-shadow:0 14px 26px -10px rgba(0,0,0,.35), inset 0 -8px 14px rgba(0,0,0,.12); }
+  .clue, .verse { background:var(--card); border:2px solid var(--line); border-radius:20px; padding:20px 16px; margin:8px 0 14px; text-align:center; font-size:23px; font-weight:800; line-height:1.9; box-shadow:var(--shadow); }
+  .verse small { display:block; font-size:14px; color:var(--muted); margin-top:6px; font-weight:600; }
+  .blank { color:var(--orange); letter-spacing:2px; }
+
+  .field { position:relative; height:300px; border-radius:22px; overflow:hidden; background:radial-gradient(circle at 30% 20%,#2b3a9a,#141f73 70%); box-shadow:var(--shadow); }
+  .star { position:absolute; width:60px; height:60px; font-size:44px; background:none; border:0; cursor:pointer; padding:0; transition:left .35s var(--ease), top .35s var(--ease); filter:drop-shadow(0 0 10px #ffd54a); }
+  #si { color:var(--text); }
+  .ttt .opt { height:96px; font-size:46px; }
+
+  .win { margin-top:20px; padding:22px 16px; text-align:center; font-size:22px; font-weight:800; background:var(--card); border:2px solid var(--orange); border-radius:22px; box-shadow:var(--shadow); animation:pop .5s var(--ease); }
+  .again { margin-top:14px; background:linear-gradient(135deg,var(--orange),#ff9f55); color:#fff; border:0; border-radius:14px; padding:13px 26px; font-size:18px; font-weight:800; cursor:pointer; box-shadow:0 10px 18px -8px var(--orange); transition:transform .15s; }
+  .again:active { transform:scale(.94); }
+
+  .confetti { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:50; }
+  .confetti span { position:absolute; top:-50px; animation:fall 1.9s ease-in forwards; }
+  @keyframes fall { to { transform:translateY(112vh) rotate(420deg); } }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } .tile { opacity:1; } }
+</style>
+<script src="settings.js"></script>
+</head>
+<body>
+<header>ألعاب الأطفال<a href="home.html" title="رجوع">›</a><span id="stars">⭐ 0</span></header>
+<div class="wrap">
+  <div id="home" class="view"></div>
+  <div id="game">
+    <div class="top"><button class="backbtn" id="back">رجوع ›</button><h2 id="title"></h2></div>
+    <div id="area"></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const area = $('area');
+const rand = n => Math.floor(Math.random() * n);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+let total = 0, cur = 0, timers = [];
+try { total = +localStorage.getItem('kidStars') || 0; } catch (e) {}
+function updStars(bump) {
+  const s = $('stars'); s.textContent = '⭐ ' + total;
+  if (bump) { s.classList.remove('bump'); void s.offsetWidth; s.classList.add('bump'); }
+}
+function save() { try { localStorage.setItem('kidStars', total); } catch (e) {} }
+updStars();
+
+function every(f, ms) { const id = setInterval(f, ms); timers.push(id); return id; }
+function later(f, ms) { const id = setTimeout(f, ms); timers.push(id); return id; }
+function clearAll() { timers.forEach(id => { clearInterval(id); clearTimeout(id); }); timers = []; }
+function btn(text, fn, cls = 'opt') { const b = document.createElement('button'); b.className = cls; b.textContent = text; b.onclick = fn; return b; }
+function shake(el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 400); }
+
+function confetti() {
+  const box = document.createElement('div'); box.className = 'confetti';
+  const E = ['🎉', '⭐', '✨', '🎊', '💛', '🌟'];
+  for (let i = 0; i < 30; i++) {
+    const s = document.createElement('span'); s.textContent = E[rand(E.length)];
+    s.style.left = rand(100) + '%'; s.style.animationDelay = (Math.random() * .5) + 's'; s.style.fontSize = (18 + rand(20)) + 'px';
+    box.appendChild(s);
+  }
+  document.body.appendChild(box); setTimeout(() => box.remove(), 2600);
+}
+
+function win(text, good = true) {
+  clearAll();
+  if (good) { total++; save(); updStars(true); confetti(); }
+  const d = document.createElement('div'); d.className = 'win';
+  d.innerHTML = '<div>' + (good ? '🎉' : '💪') + ' ' + text + '</div>';
+  d.appendChild(btn('🔁 العب تاني', () => start(cur), 'again'));
+  area.appendChild(d);
+  d.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* أسئلة اختيار من متعدد (تُستخدم في عدة ألعاب) */
+function quiz(totalQ, make, goodMin) {
+  let n = 0, ok = 0;
+  (function next() {
+    if (n === totalQ) { area.innerHTML = ''; win('جبت ' + ok + ' من ' + totalQ + ' صح', ok >= goodMin); return; }
+    n++; const k = n;
+    const q = make(), cols = q.cols || 'g2';
+    area.innerHTML = '<div class="bar"><i id="bi" style="width:' + ((k - 1) / totalQ * 100) + '%"></i></div><div class="info">سؤال ' + k + ' من ' + totalQ + '</div>' + q.html + '<div class="grid ' + cols + ' view" id="qo"></div>';
+    requestAnimationFrame(() => requestAnimationFrame(() => { const bi = $('bi'); if (bi) bi.style.width = (k / totalQ * 100) + '%'; }));
+    q.options.forEach(o => {
+      const b = btn(o.label, () => {
+        area.querySelectorAll('.opt').forEach(x => x.disabled = true);
+        if (o.ok) { ok++; b.classList.add('ok'); }
+        else { b.classList.add('no'); area.querySelectorAll('.opt').forEach(x => { if (x.dataset.ok === '1') x.classList.add('ok'); }); }
+        later(next, 900);
+      }, cols === 'g1' ? 'opt long' : 'opt');
+      if (o.ok) b.dataset.ok = '1';
+      $('qo').appendChild(b);
+    });
+  })();
+}
+
+/* ترتيب عناصر بالتسلسل الصحيح (تُستخدم في لعبتين) */
+function seq(items, cols) {
+  let nx = 0;
+  area.innerHTML = '<div class="info">اضغط بالترتيب الصحيح من الأول للأخير</div><div class="grid ' + cols + '" id="sq"></div>';
+  shuffle(items.map((t, i) => ({ t, i }))).forEach(o => {
+    const b = btn(o.t, () => {
+      if (o.i === nx) { nx++; b.disabled = true; b.classList.add('ok'); b.dataset.n = nx; if (nx === items.length) win('ترتيب صحيح، برافو!'); }
+      else shake(b);
+    }, 'opt long');
+    $('sq').appendChild(b);
+  });
+}
+
+/* ================= ألعاب ممتعة ================= */
+function memory(pool) {
+  const em = shuffle(pool).slice(0, 6);
+  area.innerHTML = '<div class="info">اقلب الكروت ودوّر على الصور المتشابهة</div><div class="grid g4" id="mg"></div>';
+  let first = null, lock = false, found = 0, tries = 0;
+  shuffle([...em, ...em]).forEach(e => {
+    const b = btn('❓', () => {
+      if (lock || b.classList.contains('open')) return;
+      b.textContent = e; b.classList.add('open');
+      if (!first) { first = b; return; }
+      tries++;
+      if (first.textContent === e) { first = null; found++; if (found === 6) later(() => win('برافو! خلصتها في ' + tries + ' محاولة'), 400); }
+      else {
+        lock = true; const a = first; first = null;
+        later(() => { a.textContent = '❓'; b.textContent = '❓'; a.classList.remove('open'); b.classList.remove('open'); lock = false; }, 800);
+      }
+    }, 'card');
+    $('mg').appendChild(b);
+  });
+}
+const memoryFun = () => memory(['🐶','🐱','🐰','🦁','🐸','🐵','🐼','🐯']);
+const memoryChurch = () => memory(['✝️','🕊️','⛪','📖','🕯️','🙏','🐑','⭐','👼','🍞']);
+
+function math() {
+  quiz(5, () => {
+    const a = rand(10) + 1, c = rand(10) + 1, plus = Math.random() < .6;
+    const hi = Math.max(a, c), lo = Math.min(a, c), A = plus ? a + c : hi - lo;
+    const s = new Set([A]); while (s.size < 4) { const x = A + rand(7) - 3; if (x >= 0) s.add(x); }
+    return { html: '<div class="big" dir="ltr">' + (plus ? a + ' + ' + c : hi + ' − ' + lo) + ' = ؟</div>',
+             options: shuffle([...s]).map(v => ({ label: v, ok: v === A })) };
+  }, 3);
+}
+
+function guess() {
+  const secret = rand(10) + 1; let tries = 0;
+  area.innerHTML = '<div class="info" id="gi">أنا فكرت في رقم من 1 إلى 10. خمّنه!</div><div class="grid g5" id="gg"></div>';
+  for (let n = 1; n <= 10; n++) {
+    const b = btn(n, () => {
+      tries++;
+      if (n === secret) { b.classList.add('ok'); win('برافو! عرفته في ' + tries + ' محاولة'); }
+      else { b.disabled = true; $('gi').textContent = n < secret ? 'الرقم أكبر ⬆️' : 'الرقم أصغر ⬇️'; }
+    });
+    $('gg').appendChild(b);
+  }
+}
+
+function rps() {
+  let me = 0, pc = 0; const E = { r: '✊', p: '✋', s: '✌️' };
+  area.innerHTML = '<div class="info" id="ri">أنت 0 - 0 الكمبيوتر (أول واحد يوصل 3)</div><div class="big" id="rr">❓ × ❓</div><div class="grid g3" id="rg"></div>';
+  Object.keys(E).forEach(k => {
+    $('rg').appendChild(btn(E[k], () => {
+      if (me === 3 || pc === 3) return;
+      const c = ['r', 'p', 's'][rand(3)];
+      $('rr').textContent = E[k] + ' × ' + E[c];
+      if (k !== c) { if ((k === 'r' && c === 's') || (k === 'p' && c === 'r') || (k === 's' && c === 'p')) me++; else pc++; }
+      $('ri').textContent = 'أنت ' + me + ' - ' + pc + ' الكمبيوتر';
+      if (me === 3) win('كسبت!'); else if (pc === 3) win('الكمبيوتر كسب، جرّب تاني', false);
+    }, 'opt emoji'));
+  });
+}
+
+function stars() {
+  let s = 0, t = 15;
+  area.innerHTML = '<div class="info" id="si"></div><div class="field" id="f"><button class="star" id="st">⭐</button></div>';
+  const st = $('st'), f = $('f');
+  const upd = () => $('si').textContent = '⏱️ ' + t + '   ⭐ ' + s;
+  const mv = () => { st.style.left = rand(Math.max(1, f.clientWidth - 60)) + 'px'; st.style.top = rand(Math.max(1, f.clientHeight - 60)) + 'px'; };
+  upd(); mv();
+  st.onclick = () => { s++; mv(); upd(); };
+  every(mv, 1100);
+  every(() => { t--; upd(); if (t <= 0) win('جمعت ' + s + ' نجمة!', s >= 8); }, 1000);
+}
+
+function colors() {
+  const C = [['أحمر','#e53935'],['أزرق','#1e88e5'],['أخضر','#43a047'],['أصفر','#fdd835'],['برتقالي','#fb8c00'],['بنفسجي','#8e24aa'],['وردي','#ec407a'],['بني','#795548']];
+  quiz(6, () => {
+    const ans = C[rand(C.length)];
+    const o = shuffle([ans, ...shuffle(C.filter(x => x !== ans)).slice(0, 3)]);
+    return { html: '<div class="info">ما اسم هذا اللون؟</div><div class="dot" style="background:' + ans[1] + '"></div>',
+             options: o.map(x => ({ label: x[0], ok: x === ans })) };
+  }, 4);
+}
+
+function order() {
+  let nx = 1, t0 = null;
+  area.innerHTML = '<div class="info">اضغط الأرقام من 1 إلى 9 بالترتيب</div><div class="grid g3" id="og"></div>';
+  shuffle([1,2,3,4,5,6,7,8,9]).forEach(n => {
+    const b = btn(n, () => {
+      if (t0 === null) t0 = Date.now();
+      if (n === nx) {
+        b.disabled = true; b.classList.add('ok'); nx++;
+        if (nx > 9) { const sec = (Date.now() - t0) / 1000; win('خلصت في ' + sec.toFixed(1) + ' ثانية!'); }
+      } else shake(b);
+    });
+    $('og').appendChild(b);
+  });
+}
+
+function animals() {
+  const AN = [['🐘','فيل'],['🦁','أسد'],['🐒','قرد'],['🐪','جمل'],['🐑','خروف'],['🐓','ديك'],['🐟','سمكة'],['🦒','زرافة'],['🐢','سلحفاة'],['🐴','حصان'],['🐄','بقرة'],['🐱','قطة'],['🐶','كلب'],['🐰','أرنب']];
+  const d = shuffle(AN);
+  quiz(6, () => {
+    const a = d.pop();
+    const o = shuffle([a, ...shuffle(AN.filter(x => x !== a)).slice(0, 2)]);
+    return { html: '<div class="huge">' + a[0] + '</div>', cols: 'g3', options: o.map(x => ({ label: x[1], ok: x === a })) };
+  }, 4);
+}
+
+function ttt() {
+  const b = Array(9).fill(''), cells = []; let over = false;
+  const L = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  const wnr = p => L.some(l => l.every(i => b[i] === p));
+  area.innerHTML = '<div class="grid g3 ttt" id="tg"></div><div class="info">أنت ❌ والكمبيوتر ⭕</div>';
+  const draw = () => cells.forEach((c, i) => c.textContent = b[i] === 'X' ? '❌' : b[i] === 'O' ? '⭕' : '');
+  const end = () => {
+    if (wnr('X')) { over = true; win('كسبت!'); return true; }
+    if (wnr('O')) { over = true; win('الكمبيوتر كسب، جرّب تاني', false); return true; }
+    if (b.every(x => x)) { over = true; win('تعادل!', false); return true; }
+    return false;
+  };
+  const ai = () => {
+    const free = b.map((v, i) => v ? -1 : i).filter(i => i >= 0);
+    const find = p => free.find(i => { b[i] = p; const w = wnr(p); b[i] = ''; return w; });
+    let m = find('O');
+    if (m === undefined && Math.random() < .65) m = find('X');
+    if (m === undefined) m = (!b[4] && Math.random() < .7) ? 4 : free[rand(free.length)];
+    b[m] = 'O';
+  };
+  for (let i = 0; i < 9; i++) {
+    const c = btn('', () => {
+      if (over || b[i]) return;
+      b[i] = 'X'; draw(); if (end()) return;
+      ai(); draw(); end();
+    });
+    cells.push(c); $('tg').appendChild(c);
+  }
+}
+
+function odd() {
+  const P = [['🍎','🍅'],['🐶','🐺'],['🐱','🐯'],['🍊','🍋'],['🐰','🐭'],['⭐','🌟'],['🌞','🌝']];
+  let round = 0;
+  (function next() {
+    if (round === 5) { win('أنت شاطر! لقيت كل الأشكال المختلفة'); return; }
+    round++;
+    const size = round < 3 ? 3 : 4, p = P[rand(P.length)];
+    const [a, o] = Math.random() < .5 ? [p[1], p[0]] : p, oddIdx = rand(size * size);
+    area.innerHTML = '<div class="info">اعثر على الشكل المختلف (' + round + ' من 5)</div><div class="grid g' + size + ' view" id="od"></div>';
+    for (let i = 0; i < size * size; i++) {
+      const x = btn(i === oddIdx ? o : a, () => {
+        if (i === oddIdx) { x.classList.add('ok'); later(next, 400); } else shake(x);
+      }, 'opt emoji');
+      $('od').appendChild(x);
+    }
+  })();
+}
+
+/* ================= ألعاب دينية ================= */
+function whoami() {
+  const B = [
+    ['بنيت فلكًا كبيرًا لأنجو أنا وأسرتي من الطوفان', 'نوح'],
+    ['هزمت جليات الجبار بمقلاع وحجر صغير', 'داود'],
+    ['ابتلعني حوت كبير وبقيت في بطنه ثلاثة أيام', 'يونان'],
+    ['أخذت الوصايا العشر من الله على جبل سيناء', 'موسى'],
+    ['ألقوني في جب الأسود فلم تؤذني', 'دانيال'],
+    ['باعني إخوتي، وصرت بعد ذلك مسؤولًا كبيرًا في مصر', 'يوسف'],
+    ['عمّدت السيد المسيح في نهر الأردن', 'يوحنا المعمدان'],
+    ['وُلد منّي السيد المسيح في بيت لحم', 'العذراء مريم']
+  ];
+  const names = B.map(x => x[1]), d = shuffle(B);
+  quiz(5, () => {
+    const q = d.pop();
+    const o = shuffle([q[1], ...shuffle(names.filter(x => x !== q[1])).slice(0, 3)]);
+    return { html: '<div class="clue">«' + q[0] + '»</div><div class="info">مَن أنا؟</div>', options: o.map(x => ({ label: x, ok: x === q[1] })) };
+  }, 3);
+}
+
+function stories() {
+  const B = [
+    ['🚢🌈', 'نوح والفلك'], ['🐋', 'يونان والحوت'], ['🦁', 'دانيال في جب الأسود'],
+    ['⭐👶🐑', 'ميلاد السيد المسيح'], ['🍞🐟', 'إشباع الجموع بالخبز والسمك'], ['🌊🏃', 'عبور البحر الأحمر'],
+    ['🎵🐑', 'داود الراعي'], ['🔥👦👦👦', 'الثلاثة فتية في أتون النار'], ['🌳🍎', 'آدم وحواء في الجنة']
+  ];
+  const names = B.map(x => x[1]), d = shuffle(B);
+  quiz(6, () => {
+    const q = d.pop();
+    const o = shuffle([q[1], ...shuffle(names.filter(x => x !== q[1])).slice(0, 3)]);
+    return { html: '<div class="huge">' + q[0] + '</div><div class="info">أي قصة من الكتاب المقدس هذه؟</div>', cols: 'g1', options: o.map(x => ({ label: x, ok: x === q[1] })) };
+  }, 4);
+}
+
+function verse() {
+  const V = [
+    { t: 'الرَّبُّ رَاعِيَّ فَلاَ يُعْوِزُنِي ___', ref: 'مزمور 23: 1', a: 'شَيْءٌ', w: ['خَوْفٌ', 'حُزْنٌ', 'جُوعٌ'] },
+    { t: 'الرَّبُّ ___ وَخَلاَصِي، مِمَّنْ أَخَافُ؟', ref: 'مزمور 27: 1', a: 'نُورِي', w: ['صَدِيقِي', 'حَارِسِي', 'مُعَلِّمِي'] },
+    { t: 'هكَذَا أَحَبَّ اللهُ الْعَالَمَ حَتَّى بَذَلَ ابْنَهُ ___', ref: 'يوحنا 3: 16', a: 'الْوَحِيدَ', w: ['الْكَبِيرَ', 'الصَّغِيرَ', 'الْقَوِيَّ'] },
+    { t: 'أَكْرِمْ أَبَاكَ وَ___', ref: 'خروج 20: 12', a: 'أُمَّكَ', w: ['أَخَاكَ', 'جَارَكَ', 'مُعَلِّمَكَ'] },
+    { t: 'أَسْتَطِيعُ كُلَّ شَيْءٍ فِي الْمَسِيحِ الَّذِي ___', ref: 'فيلبي 4: 13', a: 'يُقَوِّينِي', w: ['يُعَلِّمُنِي', 'يَرَانِي', 'يَسْمَعُنِي'] },
+    { t: 'صَلُّوا بِلاَ ___', ref: '١ تسالونيكي 5: 17', a: 'انْقِطَاعٍ', w: ['خَوْفٍ', 'كَسَلٍ', 'صَوْتٍ'] },
+    { t: 'لأَنَّ اللهَ ___', ref: '١ يوحنا 4: 8', a: 'مَحَبَّةٌ', w: ['بَعِيدٌ', 'غَضَبٌ', 'صَمْتٌ'] },
+    { t: 'طُوبَى لِلأَنْقِيَاءِ الْقَلْبِ، لأَنَّهُمْ ___ اللهَ', ref: 'متى 5: 8', a: 'يُعَايِنُونَ', w: ['يَنْسَوْنَ', 'يَخَافُونَ', 'يَتْرُكُونَ'] }
+  ];
+  const d = shuffle(V);
+  quiz(5, () => {
+    const q = d.pop();
+    return { html: '<div class="verse">' + q.t.replace('___', '<span class="blank">＿＿＿</span>') + '<small>' + q.ref + '</small></div><div class="info">اختار الكلمة الناقصة</div>',
+             options: shuffle([q.a, ...q.w]).map(x => ({ label: x, ok: x === q.a })) };
+  }, 3);
+}
+
+function nums() {
+  const B = [
+    ['كم عدد التلاميذ الذين اختارهم السيد المسيح؟', 12],
+    ['كم عدد الوصايا التي أعطاها الله لموسى؟', 10],
+    ['كم يومًا صام السيد المسيح في البرية؟', 40],
+    ['كم يومًا بقي يونان في بطن الحوت؟', 3],
+    ['كم يومًا عمل الله فيها قبل يوم الراحة؟', 6],
+    ['كم عدد الأناجيل في العهد الجديد؟', 4],
+    ['كم عدد أسرار الكنيسة السبعة؟ (اختار الرقم)', 7],
+    ['كم عدد الأقانيم في الثالوث القدوس؟', 3]
+  ];
+  const pool = [2,3,4,5,6,7,8,10,12,30,40,50], d = shuffle(B);
+  quiz(5, () => {
+    const q = d.pop();
+    const s = new Set([q[1], ...shuffle(pool.filter(x => x !== q[1])).slice(0, 3)]);
+    return { html: '<div class="clue">' + q[0] + '</div>', options: [...s].sort((x, y) => x - y).map(v => ({ label: v, ok: v === q[1] })) };
+  }, 3);
+}
+
+const creation = () => seq(['💡 النور', '☁️ السماء', '🌱 اليابسة والنباتات', '🌞 الشمس والقمر والنجوم', '🐟 الأسماك والطيور', '🧑 الحيوانات والإنسان', '😴 يوم الراحة'], 'g1');
+const jonah = () => seq(['الله يطلب من يونان أن يذهب إلى نينوى', 'يونان يهرب في سفينة', 'عاصفة شديدة، ويُلقى يونان في البحر', 'حوت كبير يبتلع يونان ثلاثة أيام', 'يونان يذهب إلى نينوى فيتوب أهلها'], 'g1');
+
+/* ================= القائمة ================= */
+const GAMES = [
+  { cat: 'fun', n: 'لعبة الذاكرة', e: '🧠', c: '#7c4dff', f: memoryFun },
+  { cat: 'fun', n: 'احسب وكسب', e: '➕', c: '#00b894', f: math },
+  { cat: 'fun', n: 'خمّن الرقم', e: '🔢', c: '#f39c12', f: guess },
+  { cat: 'fun', n: 'حجر ورقة مقص', e: '✊', c: '#e17055', f: rps },
+  { cat: 'fun', n: 'صيد النجوم', e: '⭐', c: '#f5b800', f: stars },
+  { cat: 'fun', n: 'أي لون هذا؟', e: '🎨', c: '#e84393', f: colors },
+  { cat: 'fun', n: 'رتّب الأرقام', e: '🔟', c: '#0984e3', f: order },
+  { cat: 'fun', n: 'أي حيوان هذا؟', e: '🦁', c: '#00a8a8', f: animals },
+  { cat: 'fun', n: 'إكس أو', e: '❌', c: '#6c5ce7', f: ttt },
+  { cat: 'fun', n: 'اعثر على المختلف', e: '🔍', c: '#d63031', f: odd },
+  { cat: 'faith', n: 'مَن أنا؟', e: '🧑‍🦳', c: '#5c6bc0', f: whoami },
+  { cat: 'faith', n: 'أي قصة هذه؟', e: '📖', c: '#26a69a', f: stories },
+  { cat: 'faith', n: 'أكمل الآية', e: '✝️', c: '#ab47bc', f: verse },
+  { cat: 'faith', n: 'أرقام في الكتاب', e: '🔢', c: '#ef6c00', f: nums },
+  { cat: 'faith', n: 'أيام الخلق', e: '🌍', c: '#f0b400', f: creation },
+  { cat: 'faith', n: 'قصة يونان', e: '🐋', c: '#1e88e5', f: jonah },
+  { cat: 'faith', n: 'ذاكرة الكنيسة', e: '⛪', c: '#8d6e63', f: memoryChurch }
+];
+
+function start(i) {
+  clearAll(); cur = i;
+  $('home').style.display = 'none';
+  const g = $('game'); g.style.display = 'block'; g.classList.remove('view'); void g.offsetWidth; g.classList.add('view');
+  $('title').textContent = GAMES[i].e + ' ' + GAMES[i].n;
+  area.innerHTML = '';
+  window.scrollTo({ top: 0 });
+  GAMES[i].f();
+}
+function home() {
+  clearAll(); $('game').style.display = 'none';
+  const h = $('home'); h.style.display = 'block'; h.classList.remove('view'); void h.offsetWidth; h.classList.add('view');
+}
+$('back').onclick = home;
+
+[['fun', '🎮 ألعاب ممتعة'], ['faith', '✝️ ألعاب دينية']].forEach(([cat, title]) => {
+  const h = document.createElement('div'); h.className = 'sec'; h.textContent = title; $('home').appendChild(h);
+  const g = document.createElement('div'); g.className = 'grid'; $('home').appendChild(g);
+  GAMES.forEach((game, i) => {
+    if (game.cat !== cat) return;
+    const t = document.createElement('button'); t.className = 'tile';
+    t.style.setProperty('--c', game.c); t.style.animationDelay = (i * 40) + 'ms';
+    t.innerHTML = '<span class="ic">' + game.e + '</span>' + game.n;
+    t.onclick = () => start(i);
+    g.appendChild(t);
+  });
+});
+</script>
+</body>
+</html>
